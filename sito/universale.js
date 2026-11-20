@@ -45,7 +45,7 @@ inp.onchange=async function(e){var f=e.target.files&&e.target.files[0];if(!f||!(
  try{if(!window.pdfjsLib)return orig(e);pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
   var pdf=await pdfjsLib.getDocument({data:await f.arrayBuffer()}).promise,items=[],lines=[];
   for(var p=1;p<=pdf.numPages;p++){var tc=await (await pdf.getPage(p)).getTextContent();if(p===1)items=tc.items;lines=lines.concat(BustaParser.itemsToLines(tc.items));}
-  var j=BustaParser.parse(lines);if(j.netto||j.voci.length)return orig(e);
+  var j=BustaParser.parse(lines);if(j.netto)return orig(e);
   var r=leggi(items);if(r.netto==null)return orig(e);
   avviso('');$('risultato').classList.add('hide');$('salva').textContent='Salva nel mio archivio';ultimo=r;if(r.mese)$('salva').click();mostra(r);
  }catch(err){return orig(e);}};
