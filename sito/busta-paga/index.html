@@ -271,7 +271,7 @@ $('salva').onclick = () => {
 $('file').onchange = async e => {
   const f = e.target.files[0]; if (!f) return;
   avviso(''); $('risultato').classList.add('hide'); $('salva').textContent='Salva nel mio archivio';
-  if (!/pdf/i.test(f.type) && !/\.pdf$/i.test(f.name)) { avviso('Carica il PDF della busta paga: è il file che ti manda l'azienda o il consulente.'); return; }
+  if (!/pdf/i.test(f.type) && !/\.pdf$/i.test(f.name)) { avviso('Carica il PDF della busta paga: è il file che ti manda l\'azienda o il consulente.'); return; }
   try {
     if (!window.pdfjsLib) throw new Error('lettore non caricato');
     pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
