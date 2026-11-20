@@ -2,6 +2,7 @@
 <html lang="it">
 <head>
 <meta charset="UTF-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval' blob: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://gc.zgo.at; worker-src 'self' blob:; connect-src 'self' data: blob: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://tessdata.projectnaptha.com https://open.er-api.com https://createtool.goatcounter.com; img-src 'self' data: blob: https://createtool.goatcounter.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Carica la tua busta paga — capiscila voce per voce</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -155,7 +156,7 @@
   <footer>Prototipo v0.2 · legge al momento le buste paga fatte con il software JOB (Sistemi); altri formati in arrivo. Informazioni generali, non è una consulenza.</footer>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js" crossorigin="anonymous" integrity="sha384-/1qUCSGwTur9vjf/z9lmu/eCUYbpOTgSjmpbMQZ1/CtX2v/WcAIKqRv+U1DUCG6e"></script>
 <script src="parser.js"></script>
 <script>
 const DIZ_URL = '../dizionario/';
@@ -390,7 +391,7 @@ vai('Dash');
 <a href="https://wa.me/?text=Guarda%20questo%3A%20carichi%20la%20busta%20paga%20e%20ti%20spiega%20ogni%20voce%2C%20gratis%20e%20senza%20registrarti%20https%3A//createtool-1.github.io/busta-paga/" target="_blank" rel="noopener" style="position:fixed;right:14px;bottom:14px;z-index:50;background:#2d6a52;color:#fff;font:600 13px Inter,system-ui,sans-serif;padding:9px 14px;border-radius:20px;text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,.2)">Manda a un collega</a>
 </body>
 </html>
-<script data-goatcounter="https://createtool.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+<script data-goatcounter="https://createtool.goatcounter.com/count" async src="https://gc.zgo.at/count.v4.js" crossorigin="anonymous" integrity="sha384-nRw6qfbWyJha9LhsOtSb2YJDyZdKvvCFh0fJYlkquSFjUxp9FVNugbfy8q1jdxI+"></script>
 <script src="../tutorial.js?v=2" data-tool="busta"></script>
 <script src="../incolla.js?v=1"></script>
-<script src="../ocr.js?v=4"></script>
+<script src="../ocr.js?v=5"></script>
