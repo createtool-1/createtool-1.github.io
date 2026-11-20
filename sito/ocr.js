@@ -27,7 +27,7 @@ function eu(v){return v==null?'':String(v).replace('.',',');}
 function pannello(r){
  var t=document.getElementById('titolo');if(!t)return;var old=document.getElementById('ocrBox');if(old)old.remove();
  var b=document.createElement('div');b.id='ocrBox';b.style.cssText='background:#fff6e0;border-radius:12px;padding:12px 12px 14px;margin:10px 0;font-size:14px;color:#5a4300';
- var h=document.createElement('div');h.style.cssText='font-weight:600;margin-bottom:8px';h.textContent='Letta da screenshot: controlla i numeri principali e correggili se serve';b.appendChild(h);
+ var h=document.createElement('div');h.style.cssText='font-weight:600;margin-bottom:8px';h.textContent='Non sono riuscito a leggere tutto: completa i dati mancanti';b.appendChild(h);
  function riga(lab,el){var d=document.createElement('label');d.style.cssText='display:flex;justify-content:space-between;align-items:center;gap:10px;margin:6px 0';var s=document.createElement('span');s.textContent=lab;d.appendChild(s);el.style.cssText='width:55%;padding:8px;border:1px solid #e0cf9e;border-radius:8px;font:inherit;background:#fff';d.appendChild(el);b.appendChild(d);}
  var sm=document.createElement('select');MESI.forEach(function(n,i){var o=new Option(n.charAt(0)+n.slice(1).toLowerCase(),i+1);sm.appendChild(o);});sm.value=r.meseNum||new Date().getMonth()+1;riga('Mese',sm);
  function campo(v){var i=document.createElement('input');i.inputMode='decimal';i.value=eu(v);return i;}
@@ -46,10 +46,16 @@ inp.onchange=async function(e){
   var img=await inCanvas(f);
   avviso('Sto leggendo lo screenshot... quasi fatto.');
   var res=await Tesseract.recognize(img,'ita');
-  var lines=(res.data.lines&&res.data.lines.length?res.data.lines.map(function(l){return l.text;}):res.data.text.split('\n')).map(function(s){return s.trim();}).filter(Boolean);
-  var r;try{r=BustaParser.parse(lines);}catch(x){r={voci:[]};}
-  r=completa(r,lines);
-  avviso('');ultimo=r;if(r.mese)$('salva').click();mostra(r);pannello(r);
+  var D=res.data,H=img.height,items=[],hs=[];(D.lines||[]).forEach(function(L){(L.words||[]).forEach(function(w){hs.push(w.bbox.y1-w.bbox.y0);});});hs.sort(function(a,b){return a-b;});var k=8/(hs[Math.floor(hs.length/2)]||20);
+  (D.lines||[]).forEach(function(L){var yb=(L.baseline&&L.baseline.y0!=null)?Math.max(L.baseline.y0,L.baseline.y1):L.bbox.y1;
+   (L.words||[]).forEach(function(w){items.push({str:w.text,transform:[1,0,0,1,w.bbox.x0*k,(H-yb)*k],width:(w.bbox.x1-w.bbox.x0)*k});});});
+  var righe=items.length?BustaParser.itemsToLines(items):[];
+  var testo=(D.text||'').split('\n').map(function(s){return s.trim();}).filter(Boolean);
+  var r=null;try{r=BustaParser.parse(righe);}catch(x){}
+  if(!r||(!r.netto&&!(r.voci&&r.voci.length))){try{r=BustaParser.parse(testo);}catch(x){r={voci:[]};}}
+  r=completa(r,righe.length?righe:testo);
+  avviso('');ultimo=r;if(r.mese)$('salva').click();mostra(r);
+  if(!r.mese||r.netto==null)pannello(r);
  }catch(err){avviso('Non sono riuscito a leggere lo screenshot ('+(err&&err.message||err)+'). Prova con il PDF.');}
 };
 document.addEventListener('paste',function(e){
