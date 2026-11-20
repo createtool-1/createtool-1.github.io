@@ -1,7 +1,7 @@
 (function(){
 var tool=document.currentScript.getAttribute('data-tool');
 var KEY='tutorial_visto_'+tool;
-try{if(localStorage.getItem(KEY))return;}catch(e){return;}
+var visto=false;try{visto=!!localStorage.getItem(KEY);}catch(e){}
 var ios=/iPhone|iPad|iPod/.test(navigator.userAgent)&&!window.navigator.standalone;
 var passi={
  busta:[
@@ -43,6 +43,9 @@ function mostra(){
  r.appendChild(s);r.appendChild(a);
  box.appendChild(n);box.appendChild(t);box.appendChild(p);box.appendChild(d);box.appendChild(r);
 }
-mostra();
-if(document.body)document.body.appendChild(bg);else document.addEventListener('DOMContentLoaded',function(){document.body.appendChild(bg);});
+function apri(){i=0;mostra();document.body.appendChild(bg);}
+var imp=document.getElementById('tImp')||document.getElementById('mImp');
+if(imp){var b=document.createElement('button');b.innerHTML='<svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .9-1 1.5V14M12 17h.01"/></svg>Tutorial';
+ b.style.marginTop='auto';imp.style.marginTop='0';b.onclick=function(){if(window.menu)window.menu(false);apri();};imp.parentNode.insertBefore(b,imp);}
+if(!visto)apri();
 })();
