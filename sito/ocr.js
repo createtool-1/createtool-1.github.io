@@ -3,7 +3,7 @@ var inp=document.getElementById('file');if(!inp)return;
 var small=document.querySelector('label.drop[for=file] small');if(small)small.textContent='PDF (consigliato) o screenshot';
 var orig=inp.onchange;
 var MESI=['GENNAIO','FEBBRAIO','MARZO','APRILE','MAGGIO','GIUGNO','LUGLIO','AGOSTO','SETTEMBRE','OTTOBRE','NOVEMBRE','DICEMBRE'];
-function carica(){return new Promise(function(ok,ko){if(window.Tesseract)return ok();var s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js';s.onload=ok;s.onerror=function(){ko(new Error('lettore non scaricato'));};document.head.appendChild(s);});}
+function carica(){return new Promise(function(ok,ko){if(window.Tesseract)return ok();var s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/tesseract.min.js';s.crossOrigin='anonymous';s.integrity='sha384-GJqSu7vueQ9qN0E9yLPb3Wtpd7OrgK8KmYzC8T1IysG1bcvxvIO4qtYR/D3A991F';s.onload=ok;s.onerror=function(){ko(new Error('lettore non scaricato'));};document.head.appendChild(s);});}
 function inCanvas(f){return new Promise(function(ok,ko){var u=URL.createObjectURL(f),im=new Image();
  im.onload=function(){var w=im.naturalWidth,h=im.naturalHeight,k=2000/w;if(h*k>8000)k=8000/h;var c=document.createElement('canvas');c.width=Math.round(w*k);c.height=Math.round(h*k);
   var x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height);x.drawImage(im,0,0,c.width,c.height);URL.revokeObjectURL(u);ok(c);};
