@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Carica la tua busta paga — capiscila voce per voce</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#f4f2ec;--card:#fff;--ink:#1b2420;--mute:#727a75;--line:#e6e2d8;--acc:#2d6a52;--ok:#2d6a52}
+  .card,.k,.hero,.drop,.tabs button,.tabs a{box-shadow:0 1px 2px rgba(20,30,25,.05)}
+  .card{border-radius:18px;padding:20px}
+  .k{background:#f2f5f2}
+  .hero{background:linear-gradient(135deg,#1b2420,#2d4a3e)}
+  .bar i{background:#7fb39b}
+  h1,h2,.hero b,.k b{letter-spacing:-.02em}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;background:var(--bg);color:var(--ink);line-height:1.5}
+  .wrap{max-width:720px;margin:0 auto;padding:32px 18px 48px}
+  h1{font-size:1.9rem;margin:0 0 6px}
+  .sub{color:var(--mute);margin:0 0 22px}
+  .drop{display:block;background:var(--acc);color:#fff;text-align:center;font-size:1.25rem;font-weight:700;padding:26px 16px;border-radius:16px;cursor:pointer}
+  .drop small{display:block;font-weight:400;font-size:.9rem;opacity:.9;margin-top:6px}
+  input[type=file]{display:none}
+  .priv{font-size:.9rem;color:var(--ok);margin:10px 0 0;text-align:center}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;margin:16px 0}
+  .card h2{font-size:1.15rem;margin:0 0 10px}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .k{background:#f4f6fb;border-radius:10px;padding:10px 12px}
+  .k span{display:block;font-size:.8rem;color:var(--mute)}
+  .k b{font-size:1.2rem}
+  .voce{border-top:1px solid var(--line);padding:12px 0}
+  .voce:first-of-type{border-top:0}
+  .voce .t{display:flex;justify-content:space-between;gap:10px;font-weight:600}
+  .voce p{margin:4px 0 0;color:#3a3a3e;font-size:.95rem}
+  .voce a{font-size:.85rem;color:var(--acc)}
+  .btn{background:var(--ink);color:#fff;border:0;border-radius:10px;padding:12px 16px;font-size:1rem;cursor:pointer;width:100%}
+  .btn.light{background:#fff;color:var(--ink);border:1px solid var(--line);margin-top:8px}
+  .msg{padding:12px;border-radius:10px;background:#fff5e6;border:1px solid #f3d9a8;margin-top:14px;display:none}
+  table{width:100%;border-collapse:collapse;font-size:.95rem}
+  td,th{text-align:left;padding:7px 4px;border-bottom:1px solid var(--line)}
+  td.n,th.n{text-align:right}
+  .tabs{display:flex;gap:6px;margin:0 0 18px}
+  .tabs button{flex:1;padding:10px 6px;border:1px solid var(--line);background:#fff;border-radius:10px;font-weight:600;cursor:pointer;font-size:.95rem}
+  .tabs button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+  .tabs a{flex:1;padding:10px 6px;border:1px solid var(--line);background:#fff;border-radius:10px;font-weight:600;font-size:.95rem;text-align:center;color:var(--ink);text-decoration:none}
+  .hero{background:var(--ink);color:#fff;border-radius:16px;padding:20px}
+  .hero span{color:#cfcfd4;font-size:.9rem}
+  .hero b{display:block;font-size:2.2rem;margin-top:2px}
+  .bars{display:flex;align-items:flex-end;gap:16px;height:136px;margin-top:8px;overflow-x:auto;padding-bottom:8px;-webkit-overflow-scrolling:touch;scroll-behavior:smooth}
+  .bars>.bar:first-child{margin-left:auto}
+  .bars>.bar:last-child{margin-right:auto}
+  .bar{flex:0 0 76px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;font-size:.75rem;color:var(--mute)}
+  .bar i{display:block;width:100%;background:var(--acc);border-radius:6px 6px 0 0;min-height:4px}
+  .bar em{font-style:normal;color:var(--ink);font-weight:600;margin-bottom:3px}
+  .voce summary{list-style:none;cursor:pointer;padding:4px 0}
+  .voce summary::-webkit-details-marker{display:none}
+  .voce[open] summary{color:var(--acc)}
+  .altri summary{cursor:pointer;color:var(--acc);margin-top:12px;font-size:.95rem}
+  .mese{display:flex;justify-content:space-between;align-items:center;padding:14px 4px;border-top:1px solid var(--line);cursor:pointer}
+  .mese:first-child{border-top:0}
+  .mese b{font-size:1.15rem}
+  .mese small{display:block;color:var(--mute);font-size:.82rem}
+  .mese .go{color:var(--mute);font-size:1.3rem;margin-left:10px}
+  .link{background:none;border:0;color:var(--mute);font-size:.85rem;text-decoration:underline;cursor:pointer;margin-top:14px}
+  .bar i{width:38px}
+  .bar em{white-space:nowrap;font-size:.72rem}
+  .tabs button{color:var(--ink);white-space:nowrap;font-size:.88rem;font-family:inherit;-webkit-appearance:none;appearance:none}
+  .topbar{display:flex;align-items:center;gap:12px;margin:0 0 16px}
+  .topbar b{font-size:1.1rem}
+  .burger{width:42px;height:42px;border:1px solid var(--line);background:#fff;border-radius:10px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--ink);-webkit-appearance:none}
+  .burger{position:fixed;top:12px;left:12px;z-index:18;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+  .wrap{padding-top:68px}
+  .drawer{position:fixed;top:0;left:0;bottom:0;width:260px;background:#fff;box-shadow:2px 0 24px rgba(0,0,0,.12);transform:translateX(-105%);transition:transform .25s;z-index:20;padding:24px 14px;display:flex;flex-direction:column;gap:6px}
+  .drawer.open{transform:none}
+  .drawer button{display:flex;align-items:center;text-align:left;padding:12px 14px;border:0;background:none;border-radius:10px;font:600 1rem Inter,system-ui,sans-serif;color:var(--ink);cursor:pointer;-webkit-appearance:none}
+  .drawer button.on{background:var(--ink);color:#fff}
+  .drawer .ic{margin-right:10px}
+  .velo{position:fixed;inset:0;background:rgba(0,0,0,.25);opacity:0;pointer-events:none;transition:opacity .25s;z-index:19}
+  .velo.open{opacity:1;pointer-events:auto}
+  .opt{display:flex;justify-content:space-between;align-items:center;padding:13px 0;border-top:1px solid var(--line);font-weight:600}
+  .opt input{width:22px;height:22px;accent-color:var(--acc)}
+  html.big{font-size:118%}
+  body.dark{--bg:#121614;--card:#1c2320;--ink:#e9eee9;--mute:#9aa49e;--line:#2c3631}
+  body.dark .k{background:#232b27}
+  body.dark .burger,body.dark .drawer,body.dark .btn.light,body.dark input{background:#1c2320;color:var(--ink)}
+  body.dark .drawer button{color:var(--ink)}
+  body.dark .drawer button.on{background:#e9eee9;color:#121614}
+  body.dark .btn{color:#121614}
+  body.dark{color-scheme:dark}
+  body.dark .hero{background:linear-gradient(135deg,#0b100e,#24382f);color:#fff}
+  body.dark .voce p{color:#c9d1cc}
+  body.dark .msg{background:#3a2f1c;border-color:#5a4826;color:var(--ink)}
+  body.dark .card,body.dark .k{box-shadow:none}
+  .drawer .dbtn{display:flex;align-items:center;padding:12px 14px;border-radius:10px;font:600 1rem Inter,system-ui,sans-serif;color:var(--ink);cursor:pointer}
+  .toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:12px 16px;border-radius:12px;font-size:.9rem;max-width:90%;z-index:30;box-shadow:0 4px 16px rgba(0,0,0,.2)}
+  .toast:empty{display:none}
+  .back{position:fixed;top:12px;left:62px;z-index:18;box-shadow:0 1px 3px rgba(0,0,0,.08);border:1px solid var(--line);background:var(--card);border-radius:10px;width:42px;height:42px;display:flex;align-items:center;justify-content:center;color:var(--ink);cursor:pointer;-webkit-appearance:none;padding:0}
+  .ic{width:1.05em;height:1.05em;vertical-align:-0.17em;margin-right:6px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+  footer{color:var(--mute);font-size:.82rem;margin-top:24px}
+  .hide{display:none}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Capisci la tua busta paga</h1>
+  <p class="sub">Caricala e ogni voce ti viene spiegata in italiano semplice. Ogni mese finisce nel tuo archivio.</p>
+
+  <div class="topbar"><button class="burger" onclick="menu(true)" aria-label="Menu"><svg class="ic" style="margin:0" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button><button id="back" class="back" onclick="indietro()" style="display:none" aria-label="Indietro"><svg class="ic" style="margin:0" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><b id="tit">Dashboard</b></div>
+<div class="velo" id="velo" onclick="menu(false)"></div>
+<div id="bkMsg" class="toast"></div>
+<nav class="drawer" id="drawer"><b style="padding:4px 14px 14px;font-size:1.1rem">Menu</b><button id="tDash" class="on" onclick="vai('Dash')"><svg class="ic" viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></svg>Dashboard</button><button id="tAnno" onclick="vai('Anno')"><svg class="ic" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>I miei anni</button><button id="tDiz" onclick="vai('Diz')"><svg class="ic" viewBox="0 0 24 24"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 21V5"/></svg>Dizionario</button><button onclick="menu(false);esporta()"><svg class="ic" viewBox="0 0 24 24"><path d="M12 4v12M6 10l6 6 6-6M4 20h16"/></svg>Esporta archivio</button><label class="dbtn"><svg class="ic" viewBox="0 0 24 24"><path d="M12 16V4M6 10l6-6 6 6M4 20h16"/></svg>Importa archivio<input type="file" accept=".json,application/json" onchange="menu(false);importa(this.files[0]);this.value=''"></label><button id="tImp" onclick="vai('Imp')" style="margin-top:auto"><svg class="ic" viewBox="0 0 24 24"><path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/></svg>Impostazioni</button></nav>
+<section id="vDash"></section>
+<section id="vCarica" class="hide">
+  <label class="drop" for="file"><svg class="ic" viewBox="0 0 24 24"><path d="M12 16V4M6 10l6-6 6 6M4 20h16"/></svg>Carica la tua busta paga<small>PDF (consigliato) · screenshot in arrivo</small></label>
+  <input id="file" type="file" accept="application/pdf,image/*">
+  <p class="priv"><svg class="ic" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>La busta paga viene letta qui, sul tuo dispositivo. Non la vediamo noi, nemmeno volendo.</p>
+  <div class="msg" id="msg"></div>
+</section>
+
+  <section id="risultato" class="hide">
+    <div class="card">
+      <h2 id="titolo"></h2>
+      <div class="grid">
+        <div class="k" style="grid-column:1/-1"><span>Ti è arrivato sul conto</span><b id="kNetto"></b></div>
+      </div>
+      <div class="grid" style="margin-top:10px">
+        <div class="k"><span>Totale competenze</span><b id="kComp"></b></div>
+        <div class="k"><span>Totale trattenute</span><b id="kTratt"></b></div>
+        <div class="k"><span>TFR accantonato nel mese</span><b id="kTfr"></b></div>
+        <div class="k"><span>Ferie residue</span><b id="kFerie"></b></div>
+        <div class="k"><span>Permessi ROL residui</span><b id="kRol"></b></div>
+      </div>
+    </div>
+    <div id="confronto"></div>
+    <div class="card">
+      <h2>Le voci della tua busta <small style="font-weight:400;color:var(--mute)">· spiegate</small></h2>
+      <div id="voci"></div>
+    </div>
+    <button class="btn light" id="salva" style="pointer-events:none">Salva nel mio archivio</button>
+  </section>
+
+  <section class="card hide" id="vDiz"><h2>Dizionario della busta paga</h2><input id="qd" type="search" placeholder="Cerca una voce…" oninput="mostraDiz()" style="width:100%;padding:12px;border:1px solid var(--line);border-radius:10px;font-size:1rem;margin-bottom:6px"><div id="diz"></div></section>
+<section class="card hide" id="vImp"><h2>Impostazioni</h2>
+<label class="opt"><span>Tema scuro</span><input type="checkbox" id="oScuro" onchange="setImp('scuro',this.checked)"></label>
+<label class="opt"><span>Testo più grande</span><input type="checkbox" id="oGrande" onchange="setImp('grande',this.checked)"></label>
+<label class="opt"><span>Valuta</span><select id="oValuta" onchange="setValuta(this.value)" style="max-width:60%;padding:8px;border-radius:8px;border:1px solid var(--line);font:inherit;font-weight:400;background:var(--card);color:var(--ink)"></select></label>
+<p id="valMsg" style="color:var(--mute);font-size:.85rem;margin:6px 0 0"></p>
+</section>
+<section class="card hide" id="archivio">
+    <h2>I miei anni</h2>
+    <div id="arch"></div>
+  </section>
+
+  <footer>Prototipo v0.2 · legge al momento le buste paga fatte con il software JOB (Sistemi); altri formati in arrivo. Informazioni generali, non è una consulenza.</footer>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="parser.js"></script>
+<script>
+const DIZ_URL = '../dizionario/';
+const SPIEGA = [
+  [/retribuzione ordinaria|paga base/i, 'La tua paga base, decisa dal contratto collettivo per il tuo livello.'],
+  [/straordinari/i, 'Ore lavorate oltre l\'orario normale, pagate di più (la % in più è la maggiorazione).'],
+  [/trasfert/i, 'Indennità per i giorni in cui hai lavorato fuori sede.'],
+  [/trattamento integrativo/i, 'Aiuto dello Stato fino a 100 €/mese per i redditi più bassi. Te lo anticipa l\'azienda.'],
+  [/somma integrativa|207\/2024/i, 'Il "taglio del cuneo": una somma NON tassata dello Stato per chi guadagna fino a circa 20.000 €/anno.'],
+  [/tredicesim/i, 'La mensilità in più di dicembre: matura 1/12 per ogni mese lavorato.'],
+  [/quattordicesim/i, 'Mensilità in più estiva, solo se prevista dal tuo contratto.'],
+  [/malattia/i, 'Giorni di malattia: i primi di solito li paga l\'azienda, poi l\'INPS (anticipata in busta).'],
+  [/infortun/i, 'Assenza per infortunio sul lavoro: paga l\'INAIL, anticipata dall\'azienda.'],
+  [/ferie/i, 'Ore o giorni di ferie pagati.'],
+  [/r\.?o\.?l|permess/i, 'Ore di permesso retribuito previste dal contratto.'],
+  [/festivit/i, 'Feste pagate anche se non lavori; se cadono di domenica spesso ti spettano in più.'],
+  [/notturn|turno|festiv/i, 'Maggiorazione per lavoro di notte, nei festivi o su turni.'],
+  [/superminimo/i, 'Somma in più rispetto al minimo del contratto, decisa dall\'azienda.'],
+  [/premio/i, 'Premio legato ai risultati: spesso con tassazione agevolata.'],
+  [/edr|elemento distinto/i, 'Piccola somma fissa nata con l\'abolizione della vecchia "scala mobile".'],
+  [/buon[io] pasto|ticket/i, 'Buoni pasto: entro certe soglie non sono tassati.'],
+  [/addizional/i, 'Tasse di Regione e Comune, pagate a rate sul reddito dell\'anno prima.'],
+  [/conguagli/i, 'Ricalcolo delle tasse di fine anno: può darti un rimborso o una trattenuta.'],
+  [/arretrat|una tantum/i, 'Soldi che ti spettavano nei mesi passati, pagati adesso.'],
+  [/rimbors/i, 'Restituzione di spese fatte per lavoro: di solito non tassata.'],
+  [/acconto|anticip/i, 'Soldi già ricevuti prima, ora tolti dal netto.'],
+  [/cessione|delegazione|prestit/i, 'Rata di un prestito trattenuta direttamente dalla busta.'],
+  [/sindacal/i, 'Quota di iscrizione al sindacato.'],
+  [/netto/i, 'Quello che ti arriva davvero sul conto: competenze meno trattenute.'],
+  [/competenz/i, 'Competenze = tutto quello che ti spetta. Trattenute = tutto quello che ti tolgono (tasse, contributi, rate).'],
+  [/inps|contributi? ivs/i, 'Contributi per la tua pensione e le tutele (malattia, disoccupazione). Tu paghi circa il 9-10%, l\'azienda molto di più.'],
+  [/irpef/i, 'La tassa principale sullo stipendio. Lorda = senza sconti, netta = quella che paghi davvero dopo le detrazioni.'],
+  [/detrazion/i, 'Uno sconto sull\'IRPEF per chi lavora come dipendente: più basso è il reddito, più alto è lo sconto.'],
+  [/imponibil/i, 'La parte dello stipendio su cui si calcolano tasse (fiscale) e contributi (contributivo).'],
+  [/detass|sostitutiv/i, 'Parte di stipendio (es. aumenti da rinnovo del contratto o premi) tassata con un\'imposta ridotta e fissa.'],
+  [/t\.?f\.?r/i, 'La tua liquidazione: ogni mese l\'azienda mette da parte circa 1/13,5 della paga. La ricevi a fine rapporto.'],
+  [/rate[io]/i, 'Quote che maturano ogni mese di tredicesima, quattordicesima, ferie e permessi.'],
+  [/metasalute|fondo sanitar|assistenza sanitar/i, 'Fondo sanitario integrativo: rimborsa visite ed esami. Spesso lo paga l\'azienda.'],
+  [/cometa|fondo pension|previdenza compl/i, 'Pensione in più accanto a quella INPS: ci vanno un tuo contributo, uno dell\'azienda e spesso il TFR.'],
+  [/maternit|paternit|congedo parental/i, 'Assenza per nascita e cura dei figli: gran parte la paga l\'INPS, anticipata in busta.'],
+  [/104/i, 'Permessi retribuiti (di regola 3 giorni al mese) per disabilità grave tua o di un familiare che assisti.'],
+  [/cassa integr|\bcig/i, 'Quando l\'azienda riduce o sospende il lavoro, l\'INPS paga una parte dello stipendio.'],
+  [/welfare|fringe/i, 'Beni e servizi dati dall\'azienda al posto dei soldi: entro i limiti di legge non sono tassati.'],
+  [/arrotond/i, 'I centesimi dell\'arrotondamento del netto: quelli di questo mese si recuperano il mese dopo.'],
+  [/banca ore/i, 'Ore extra messe da parte da usare più avanti come riposo pagato.'],
+  [/pignorament/i, 'Trattenuta ordinata da un giudice per pagare un debito, entro limiti di legge.'],
+  [/matrimon/i, 'Permesso pagato (circa 15 giorni) quando ti sposi, separato dalle ferie.'],
+  [/lutto|infermit/i, 'Permesso retribuito per la morte o la grave malattia di un familiare stretto.'],
+  [/certificazione unica|\bcu\b/i, 'Il riassunto ufficiale dell\'anno (redditi, tasse, contributi) che ricevi in primavera: serve per 730, ISEE, mutui.'],
+  [/colonn|asterisch/i, 'Gli asterischi C, I, T, N dicono se la voce conta per Contributi, IRPEF, TFR e se entra nel Netto.'],
+  [/gg\.? lav|ore lav|settimane retr|giorni retr/i, 'I giorni e le ore pagati e lavorati nel mese: servono anche all\'INPS per contare i tuoi contributi.'],
+  [/9,49|cigs/i, 'Il contributo INPS base è 9,19%; nelle aziende soggette a cassa integrazione straordinaria si aggiunge lo 0,30% (= 9,49%).'],
+  [/ferie non godute|monetizz/i, 'Le ferie non si vendono durante il lavoro: ti vengono pagate solo quando il rapporto finisce.'],
+  [/studio|150 ore|donazion/i, 'Permessi pagati per studio/esami (se previsti dal contratto) e per il giorno della donazione di sangue.'],
+  [/non retribuit|aspettativ|ingiustificat|ritard/i, 'Assenze non pagate: vengono tolte dalla busta in base alla paga oraria o giornaliera.'],
+  [/assemblea/i, 'Ore di assemblea sindacale durante l\'orario: entro un limite annuo sono pagate.'],
+  [/part.?time|supplementar/i, 'Part time: paga in proporzione all\'orario. Le ore in più fino al tempo pieno sono "lavoro supplementare".'],
+  [/indennit/i, 'Somma in più per una situazione particolare del lavoro (cassa, mensa, funzione, turno…).'],
+  [/mensa/i, 'La tua quota del pasto in mensa aziendale, trattenuta dalla busta.'],
+  [/bilateral|\bente\b|bild/i, 'Piccolo contributo a enti o fondi previsti dal contratto collettivo (formazione, sostegno, sanità).'],
+  [/apprendist/i, 'Contratto per imparare un mestiere: livello che sale nel tempo e contributi INPS più bassi a tuo carico.'],
+  [/scadenz|determinat/i, 'Contratto a tempo determinato: alla scadenza può essere prorogato, rinnovato o trasformato a tempo indeterminato.'],
+  [/preavviso/i, 'Il periodo da dare prima di dimissioni o licenziamento; se non lo rispetti si paga un\'indennità.'],
+  [/anticipazion|anticipo tfr/i, 'Parte del TFR presa prima della fine del lavoro (di regola dopo 8 anni, per casa o spese mediche).'],
+  [/assegno unico|assegni familiar/i, 'Gli assegni per i figli ora sono l\'Assegno Unico: lo paga l\'INPS sul tuo conto, non passa dalla busta.'],
+  [/scatt|anzianit|livello/i, 'Il livello decide la paga base; gli scatti di anzianità sono aumenti automatici dopo un certo periodo in azienda.'],
+  [/contingenz|scala mobile/i, 'La vecchia indicizzazione degli stipendi all\'inflazione: oggi ne resta l\'EDR.']
+];
+function spiega(d){ for (const [re,t] of SPIEGA) if (re.test(d)) return t; return null; }
+const eur = v => v==null ? '—' : (v*(window._rate||1)).toLocaleString('it-IT',{style:'currency',currency:window._val||'EUR'});
+const ore = v => v==null ? '—' : (String(v).replace('.',',') + ' h');
+const $ = id => document.getElementById(id);
+let ultimo = null;
+
+function avviso(t){ const m=$('msg'); m.textContent=t; m.style.display=t?'block':'none'; }
+
+function archivioLeggi(){ try { return JSON.parse(localStorage.getItem('busta_archivio')||'[]'); } catch(e){ return null; } }
+function archivioScrivi(a){ try { localStorage.setItem('busta_archivio', JSON.stringify(a)); return true; } catch(e){ return false; } }
+
+function mostraArchivio(){
+  aggiornaBack();
+  const a = archivioLeggi();
+  if (a === null) { $('arch').innerHTML = '<p>Questo browser non permette di salvare l\'archivio qui. Quando il sito sarà online funzionerà.</p>'; return; }
+  if (!a.length) { $('arch').innerHTML = '<p style="color:var(--mute)">Ancora vuoto. Carica la tua prima busta paga e salvala.</p>'; return; }
+  a.sort((x,y)=> (y.anno-x.anno)||(y.meseNum-x.meseNum));
+  window._arch = a;
+  const anni=[...new Set(a.map(b=>b.anno))];
+  if (!window._anno || !anni.includes(window._anno)) {
+    $('arch').innerHTML = anni.map(y=>{ const m=a.filter(b=>b.anno===y); const t=m.reduce((s,b)=>s+(b.netto||0),0); return `<div class="mese" onclick="window._anno=${y};mostraArchivio()"><div><b>${y}</b><small>${m.length} ${m.length===1?'mese':'mesi'} · netto ${eur(t)}</small></div><span class="go">›</span></div>`; }).join('') + '<button class="link" onclick="svuota()">Svuota archivio</button>';
+    return;
+  }
+  let h = '<div style="font-weight:700;font-size:1.1rem;margin-bottom:4px">' + window._anno + '</div><div>';
+  a.forEach((b,i)=> h += b.anno!==window._anno ? '' : `<div class="mese" onclick="apri(${i})"><div><b>${b.mese.charAt(0)+b.mese.slice(1).toLowerCase()} ${b.anno}</b><small>Lordo ${eur(b.competenze)} · tasse e contributi ${eur(b.trattenute)}</small></div><div style="display:flex;align-items:center"><b>${eur(b.netto)}</b><span class="go">›</span></div></div>`);
+  h += '</div><button class="link" onclick="svuota()">Svuota archivio</button>';
+  $('arch').innerHTML = h;
+  window._arch = a;
+}
+function svuota(){ archivioScrivi([]); mostraArchivio(); }
+function apri(i){ const b = window._arch[i]; if(!b) return; ultimo = b; $('salva').textContent='✓ Nel tuo archivio'; mostra(b); if(!b.voci) $('voci').innerHTML='<p style="color:var(--mute)">Per vedere le voci di questo mese ricarica il PDF una volta: d\'ora in poi restano salvate.</p>'; }
+
+$('salva').onclick = () => {
+  if (!ultimo || !ultimo.mese) return;
+  const a = archivioLeggi() || [];
+  const i = a.findIndex(b => b.mese===ultimo.mese && b.anno===ultimo.anno);
+  const rec = {mese:ultimo.mese, meseNum:ultimo.meseNum, anno:ultimo.anno, netto:ultimo.netto, competenze:ultimo.competenze,
+    trattenute:ultimo.trattenute, tfrMese:ultimo.tfrMese, tfrProgressivo:ultimo.tfrProgressivo, ferieResidue:ultimo.ferieResidue, rolResidui:ultimo.rolResidui, voci:ultimo.voci, ferie:ultimo.ferie, rol:ultimo.rol};
+  if (i>=0) a[i]=rec; else a.push(rec);
+  if (!archivioScrivi(a)) { avviso('Non riesco a salvare in questo browser. Funzionerà sul sito definitivo.'); return; }
+  avviso(''); $('salva').textContent='✓ Salvata nel tuo archivio'; mostraArchivio();
+};
+
+$('file').onchange = async e => {
+  const f = e.target.files[0]; if (!f) return;
+  avviso(''); $('risultato').classList.add('hide'); $('salva').textContent='Salva nel mio archivio';
+  if (!/pdf/i.test(f.type) && !/\.pdf$/i.test(f.name)) { avviso('Gli screenshot arrivano nella prossima versione. Per ora carica il PDF della busta paga.'); return; }
+  try {
+    if (!window.pdfjsLib) throw new Error('lettore non caricato');
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    const pdf = await pdfjsLib.getDocument({data: await f.arrayBuffer()}).promise;
+    let lines = [];
+    for (let p=1; p<=pdf.numPages; p++) { const tc = await (await pdf.getPage(p)).getTextContent(); lines = lines.concat(BustaParser.itemsToLines(tc.items)); }
+    const r = BustaParser.parse(lines);
+    if (!r.netto && !r.voci.length) { avviso('Non riesco a leggere questa busta paga: forse è di un formato che non conosco ancora, oppure è un\'immagine dentro un PDF.'); return; }
+    ultimo = r; $('salva').click(); mostra(r);
+  } catch(err) { avviso('Qualcosa non ha funzionato nella lettura del PDF (' + err.message + ').'); }
+};
+
+function mostra(r){
+  $('titolo').textContent = r.mese ? `Busta paga di ${r.mese.toLowerCase()} ${r.anno}` : 'La tua busta paga';
+  $('kNetto').textContent = eur(r.netto); $('kComp').textContent = eur(r.competenze); $('kTratt').textContent = eur(r.trattenute);
+  $('kTfr').textContent = eur(r.tfrMese); $('kFerie').textContent = ore(r.ferieResidue); $('kRol').textContent = ore(r.rolResidui);
+  $('voci').innerHTML = r.voci.map(v => {
+    const s = spiega(v.descrizione);
+    return `<div class="voce"><div class="t"><span>${v.descrizione}</span><span>${eur(v.importo)}</span></div>
+      <p>${s || 'Questa voce non è ancora nel nostro dizionario: la aggiungeremo presto.'}</p>
+      <a href="#" onclick="vai('Diz');return false">Vedi nel dizionario →</a></div>`;
+  }).join('') || '<p>Nessuna voce trovata.</p>';
+  $('confronto').innerHTML = confronto(r);
+  vai('Busta');
+}
+let storia=[], vista='Dash';
+function indietro(){
+  if(vista==='Busta'){ window._anno = (ultimo&&ultimo.anno)||null; vai('Anno',true); return; }
+  if(vista==='Anno' && window._anno){ window._anno=null; mostraArchivio(); return; }
+  vai('Dash');
+}
+function aggiornaBack(){ $('back').style.display = (vista==='Busta' || (vista==='Anno' && window._anno)) ? 'flex' : 'none'; }
+function menu(o){ $('drawer').classList.toggle('open',o); $('velo').classList.toggle('open',o); }
+function vai(v,back){
+  if (v==='Busta' && !ultimo) { avviso('Carica prima una busta paga.'); v='Carica'; }
+  if(!back && v!==vista) storia.push(vista); vista=v; if(v==='Dash') storia=[];
+  menu(false); $('tit').textContent={Dash:'Dashboard',Anno:'I miei anni',Diz:'Dizionario',Imp:'Impostazioni',Carica:'Carica una busta paga',Busta:'La tua busta'}[v]||'';
+  const map={Dash:'vDash',Carica:'vCarica',Busta:'risultato',Anno:'archivio',Diz:'vDiz',Imp:'vImp'};
+  if (v==='Diz') mostraDiz();
+  if (v==='Anno') { if(!back) window._anno=null; mostraArchivio(); }
+  Object.keys(map).forEach(k=>{ $(map[k]).classList.toggle('hide',k!==v); if($('t'+k)) $('t'+k).classList.toggle('on',k===v); });
+  if (v==='Dash') mostraDash();
+  aggiornaBack();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+const TIT=['Retribuzione ordinaria (paga base)','Straordinario','Trasferta','Trattamento integrativo (ex bonus Renzi)','Somma integrativa L.207/2024 (taglio del cuneo)','Tredicesima','Quattordicesima','Malattia','Infortunio','Ferie','ROL e permessi','Festività','Notturno, festivo e turni','Superminimo','Premio di risultato','EDR','Buoni pasto','Addizionale regionale e comunale','Conguaglio','Arretrati e una tantum','Rimborsi spese','Acconto / anticipo','Cessione del quinto e prestiti','Trattenuta sindacale','Netto in busta','Competenze e trattenute','Contributi INPS','IRPEF','Detrazioni da lavoro dipendente','Imponibile','Detassazione / imposta sostitutiva','TFR (liquidazione)','Ratei','Metasalute e fondi sanitari','Fondo pensione (es. Cometa)','Maternità, paternità e congedi','Permessi Legge 104','Cassa integrazione','Welfare e fringe benefit','Arrotondamento','Banca ore','Pignoramento','Congedo matrimoniale','Permesso per lutto o grave infermità','CU (Certificazione Unica)','Le colonne C, I, T, N','Giorni e ore retribuiti / lavorati','Perché l\'INPS è 9,49% e non 9,19%?','Ferie non godute','Permessi studio e donazione sangue','Permessi non retribuiti e aspettativa','Assemblea sindacale','Part time e lavoro supplementare','Indennità varie','Trattenuta mensa','Enti bilaterali e fondi del contratto','Apprendistato','Scadenza del contratto','Preavviso','Anticipo del TFR','Assegno unico (ex assegni familiari)','Livello e scatti di anzianità','Contingenza (scala mobile)'];
+function mostraDiz(){
+  const q=($('qd').value||'').toLowerCase();
+  $('diz').innerHTML = SPIEGA.map((s,i)=>({t:TIT[i]||'',d:s[1]})).filter(x=>!q||(x.t+' '+x.d).toLowerCase().includes(q)).map(x=>`<div class="voce"><div class="t"><span>${x.t}</span></div><p>${x.d}</p></div>`).join('') || '<p style="color:var(--mute)">Nessuna voce trovata.</p>';
+}
+let imp = (()=>{ try{ return JSON.parse(localStorage.getItem('busta_imp'))||{}; }catch(e){ return {}; } })();
+imp = Object.assign({scuro:false,grande:false,grafico:true,tfr:true,ferie:true,valuta:'EUR'}, imp);
+imp.grafico=imp.tfr=imp.ferie=true;
+const VALUTE=['EUR','USD','GBP','CHF','JPY','CNY','INR','RON','PLN','ALL','MAD','UAH','TRY','EGP','TND','NGN','PKR','BDT','PHP','LKR','MDL','RSD','RUB','BRL','CAD','AUD','SEK','NOK','DKK','CZK','HUF','SAR','AED'];
+function salvaImp(){ try{ localStorage.setItem('busta_imp',JSON.stringify(imp)); }catch(e){} }
+function initValute(){ let dn; try{ dn=new Intl.DisplayNames(['it'],{type:'currency'}); }catch(e){} $('oValuta').innerHTML=VALUTE.map(c=>`<option value="${c}">${c}${dn?' — '+dn.of(c):''}</option>`).join(''); $('oValuta').value=imp.valuta||'EUR'; }
+async function setValuta(c){
+  $('valMsg').textContent='';
+  if(c==='EUR'){ window._val='EUR'; window._rate=1; imp.valuta='EUR'; salvaImp(); return; }
+  try{ const r=await fetch('https://open.er-api.com/v6/latest/EUR'); const j=await r.json(); if(!j.rates||!j.rates[c]) throw 0;
+    window._val=c; window._rate=j.rates[c]; imp.valuta=c; salvaImp();
+    $('valMsg').textContent='1 € = '+j.rates[c].toLocaleString('it-IT',{maximumFractionDigits:4})+' '+c+' · tasso aggiornato '+(j.time_last_update_utc||'').slice(5,16);
+  }catch(e){ window._val='EUR'; window._rate=1; $('oValuta').value='EUR'; $('valMsg').textContent='La conversione in tempo reale si attiverà quando l\'app sarà online sul sito vero. Per ora resta in euro.'; }
+}
+function applyImp(){ document.body.classList.toggle('dark',imp.scuro); document.documentElement.classList.toggle('big',imp.grande); ['Scuro','Grande','Grafico','Tfr','Ferie'].forEach(k=>{ const el=$('o'+k); if(el) el.checked=imp[k.toLowerCase()]; }); }
+function setImp(k,v){ imp[k]=v; try{ localStorage.setItem('busta_imp',JSON.stringify(imp)); }catch(e){} applyImp(); }
+async function esporta(){
+  const a=archivioLeggi()||[]; if(!a.length){ $('bkMsg').textContent='L\'archivio è vuoto.'; return; }
+  const nome='archivio-busta-paga-'+new Date().toISOString().slice(0,10)+'.json';
+  const file=new File([JSON.stringify({app:'busta-paga',v:1,archivio:a})],nome,{type:'application/json'});
+  let dl=null; try{ dl = window.claude && window.claude.use ? await window.claude.use('downloads') : null; }catch(e){}
+  if(dl){ try{ await dl.save({filename:nome,data:JSON.stringify({app:'busta-paga',v:1,archivio:a})}); $('bkMsg').textContent='✓ Archivio esportato: tienilo al sicuro (Drive, iCloud o email).'; }catch(e){ const c=e&&e.code; $('bkMsg').textContent = c==='declined' ? 'Esportazione annullata.' : c==='rate_limited' ? 'Aspetta un attimo e riprova.' : 'Esportazione non riuscita ('+(c||'errore')+'). Riprova scegliendo un\'altra destinazione.'; } return; }
+  try{ if(navigator.canShare&&navigator.canShare({files:[file]})){ await navigator.share({files:[file],title:'Archivio busta paga'}); $('bkMsg').textContent='✓ Archivio esportato.'; return; } }catch(e){ if(e&&e.name==='AbortError') return; }
+  try{ const u=URL.createObjectURL(file); const l=document.createElement('a'); l.href=u; l.download=nome; document.body.appendChild(l); l.click(); l.remove(); setTimeout(()=>URL.revokeObjectURL(u),3000); $('bkMsg').textContent='✓ Archivio esportato nel file "'+nome+'".'; }catch(e){ $('bkMsg').textContent='Esportazione non riuscita, riprova.'; }
+}
+async function importa(f){
+  if(!f) return;
+  try{ const j=JSON.parse(await f.text()); const nuovo=Array.isArray(j)?j:j.archivio; if(!Array.isArray(nuovo)) throw 0;
+    const a=archivioLeggi()||[]; nuovo.forEach(b=>{ const i=a.findIndex(x=>x.mese===b.mese&&x.anno===b.anno); if(i>=0)a[i]=b; else a.push(b); });
+    archivioScrivi(a); mostraArchivio(); $('bkMsg').textContent='✓ Archivio importato: '+nuovo.length+(nuovo.length===1?' mese':' mesi')+'.';
+  }catch(e){ $('bkMsg').textContent='Questo file non è un archivio valido.'; }
+}
+function confronto(r){
+  const arch=(archivioLeggi()||[]).filter(b=>(b.anno<r.anno||(b.anno===r.anno&&b.meseNum<r.meseNum))).sort((x,y)=>(y.anno-x.anno)||(y.meseNum-x.meseNum));
+  const p=arch[0]; if(!p||r.netto==null) return '';
+  const dett = !!(p.voci&&p.voci.length&&r.voci&&r.voci.length);
+  const somma=b=>{ const m={}; (dett?b.voci:[]).forEach(v=>m[v.descrizione]=(m[v.descrizione]||0)+(v.importo||0)); m['Tasse e contributi']=-(b.trattenute||0); return m; };
+  const a=somma(p), c=somma(r), d=(r.netto||0)-(p.netto||0);
+  const ch=[...new Set([...Object.keys(a),...Object.keys(c)])].map(k=>({k,d:(c[k]||0)-(a[k]||0)})).filter(x=>Math.abs(x.d)>=1).sort((x,y)=>Math.abs(y.d)-Math.abs(x.d)).slice(0,6);
+  const col=v=>v>=0?'var(--acc)':'#c0533a', seg=v=>(v>=0?'+':'−')+eur(Math.abs(v));
+  return `<div class="card"><h2>Rispetto a ${p.mese.toLowerCase()} ${p.anno}</h2><div style="font-size:1.7rem;font-weight:700;color:${col(d)}">${seg(d)}</div><p style="margin:2px 0 10px;color:var(--mute)">${d>=0?'Questo mese hai preso di più.':'Questo mese hai preso di meno.'} Ecco cosa è cambiato:</p>${ch.map(x=>`<div class="mese" style="cursor:default"><span>${x.k}</span><b style="color:${col(x.d)}">${seg(x.d)}</b></div>`).join('')}${dett?'':`<p style="color:var(--mute);font-size:.85rem;margin:10px 0 0">Per vedere voce per voce cosa è cambiato, ricarica una volta il PDF di ${p.mese.toLowerCase()}${r.voci&&r.voci.length?'':' e di questo mese'}.</p>`}</div>`;
+}
+function fr(ic,nome,o,res){
+  return `<div class="k" style="padding:16px"><span style="text-transform:uppercase;letter-spacing:.06em;font-size:.72rem">${nome}</span><b style="display:block;font-size:1.6rem;margin-top:4px">${ore(o?o.res:res)}</b></div>`;
+}
+function mostraDash(){
+  const a = archivioLeggi() || [];
+  if (!a.length) { $('vDash').innerHTML = `<div class="hero"><span>Benvenuto</span><b>Il tuo anno in busta paga</b></div><div class="card"><p>Carica la tua prima busta paga: qui vedrai quanto hai guadagnato, le tue ferie e il tuo TFR, mese dopo mese.</p><button class="btn" onclick="vai('Carica')"><svg class=\"ic\" viewBox=\"0 0 24 24\"><path d=\"M12 5v14M5 12h14\"/></svg>Carica la tua prima busta paga</button></div>`; return; }
+  a.sort((x,y)=>(x.anno-y.anno)||(x.meseNum-y.meseNum));
+  const anno = a[a.length-1].anno, mesi = a.filter(b=>b.anno===anno), last = mesi[mesi.length-1];
+  let tN=0,tC=0,tT=0; mesi.forEach(b=>{tN+=b.netto||0;tC+=b.competenze||0;tT+=b.trattenute||0;});
+  const somma = re => mesi.reduce((s,b)=>s+(b.voci||[]).filter(v=>re.test(v.descrizione)).reduce((t,v)=>t+(v.importo||0),0),0);
+  const tStr = somma(/straordinar/i), tTra = somma(/trasfert/i);
+  const max = Math.max(...mesi.map(b=>b.netto||0),1);
+  const bars = mesi.map(b=>`<div class="bar"><em>${eur(b.netto)}</em><i style="height:${Math.round((b.netto||0)/max*100)}%"></i>${b.mese.slice(0,3).toLowerCase()}</div>`).join('');
+  $('vDash').innerHTML = `<div class="hero"><span>Nel ${anno} ti sono arrivati sul conto</span><b>${eur(tN)}</b><span>in ${mesi.length} ${mesi.length===1?'mese':'mesi'}</span></div>
+  ${imp.grafico?`<div class="card"><h2>Netto mese per mese</h2><div class="bars">${bars}</div></div>`:''}
+  <div class="grid"><div class="k"><span>Guadagnato prima di tasse e contributi</span><b>${eur(tC)}</b></div><div class="k"><span>Andato in tasse e contributi</span><b>${eur(tT)}</b></div>${imp.tfr?`<div class="k" style="grid-column:1/-1"><span>TFR messo da parte</span><b>${eur(last.tfrProgressivo)}</b></div>`:''}</div>${imp.ferie?`<div class="grid" style="margin-top:10px">`:'<div class="hide">'}${fr('','Ferie residue',last.ferie,last.ferieResidue)}${fr('','ROL residui',last.rol,last.rolResidui)}</div>
+  <button class="btn" style="margin-top:14px" onclick="vai('Carica')"><svg class=\"ic\" viewBox=\"0 0 24 24\"><path d=\"M12 5v14M5 12h14\"/></svg>Carica una nuova busta paga</button>`;
+  const bb=document.querySelector('.bars'); if(bb) bb.scrollLeft=bb.scrollWidth;
+}
+new MutationObserver(()=>{ clearTimeout(window._tt); if($('bkMsg').textContent) window._tt=setTimeout(()=>{ $('bkMsg').textContent=''; },4500); }).observe($('bkMsg'),{childList:true,characterData:true,subtree:true});
+applyImp(); initValute(); if(imp.valuta&&imp.valuta!=='EUR') setValuta(imp.valuta);
+mostraArchivio();
+vai('Dash');
+</script>
+<a href="https://wa.me/?text=Guarda%20questo%3A%20carichi%20la%20busta%20paga%20e%20ti%20spiega%20ogni%20voce%2C%20gratis%20e%20senza%20registrarti%20https%3A//createtool-1.github.io/busta-paga/" target="_blank" rel="noopener" style="position:fixed;right:14px;bottom:14px;z-index:50;background:#2d6a52;color:#fff;font:600 13px Inter,system-ui,sans-serif;padding:9px 14px;border-radius:20px;text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,.2)">Manda a un collega</a>
+</body>
+</html>

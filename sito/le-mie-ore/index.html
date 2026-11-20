@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Le mie ore — quanto lavori davvero</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#f4f2ec;--card:#fff;--ink:#1b2420;--mute:#727a75;--line:#e6e2d8;--acc:#2d6a52;--k:#f2f5f2}
+  body.dark{--bg:#121614;--card:#1c2320;--ink:#e9eee9;--mute:#9aa49e;--line:#2c3631;--k:#232b27;color-scheme:dark}
+  html.big{font-size:118%}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:"Inter",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.45}
+  .wrap{max-width:560px;margin:0 auto;padding:68px 16px 48px}
+  .ic{width:1.1em;height:1.1em;vertical-align:-0.18em;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+  .tb{position:fixed;top:12px;z-index:18;width:42px;height:42px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:10px;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 1px 3px rgba(0,0,0,.08);-webkit-appearance:none;padding:0}
+  #burger{left:12px} #back{left:62px;display:none}
+  .tit{font-size:1.25rem;font-weight:700;margin:0 0 14px;letter-spacing:-.02em}
+  .drawer{position:fixed;top:0;left:0;bottom:0;width:260px;background:var(--card);box-shadow:2px 0 24px rgba(0,0,0,.12);transform:translateX(-105%);transition:transform .25s;z-index:20;padding:24px 14px;display:flex;flex-direction:column;gap:6px}
+  .drawer.open{transform:none}
+  .drawer button{display:flex;align-items:center;gap:10px;text-align:left;padding:12px 14px;border:0;background:none;border-radius:10px;font:600 1rem Inter,system-ui,sans-serif;color:var(--ink);cursor:pointer;-webkit-appearance:none}
+  .chips{display:flex;gap:6px;margin-bottom:14px}
+  .chips button{flex:1;padding:9px 4px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:10px;font:600 .88rem Inter,system-ui,sans-serif;cursor:pointer;-webkit-appearance:none}
+  .chips button.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+  .drawer .dbtn{display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:10px;font:600 1rem Inter,system-ui,sans-serif;color:var(--ink);cursor:pointer}
+  .drawer button.on{background:var(--ink);color:var(--bg)}
+  .velo{position:fixed;inset:0;background:rgba(0,0,0,.25);opacity:0;pointer-events:none;transition:opacity .25s;z-index:19}
+  .velo.open{opacity:1;pointer-events:auto}
+  .hero{background:linear-gradient(135deg,#1b2420,#2d4a3e);color:#fff;border-radius:18px;padding:18px 20px}
+  body.dark .hero{background:linear-gradient(135deg,#0b100e,#24382f)}
+  .hero span{color:#cfd6d2;font-size:.9rem}
+  .hero b{display:block;font-size:2.4rem;letter-spacing:-.02em}
+  .grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:12px}
+  .k{background:var(--k);border-radius:14px;padding:12px}
+  .k span{display:block;font-size:.72rem;color:var(--mute);text-transform:uppercase;letter-spacing:.05em}
+  .k b{font-size:1.25rem}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;margin:14px 0}
+  .card h2{font-size:1.05rem;margin:0 0 12px}
+  .row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+  label.l{font-size:.78rem;color:var(--mute);display:block;margin-bottom:4px}
+  input{width:100%;padding:11px;border:1px solid var(--line);border-radius:10px;font-size:1rem;font-family:inherit;background:var(--card);color:var(--ink)}
+  .btn{width:100%;margin-top:14px;padding:14px;border:0;border-radius:12px;background:var(--acc);color:#fff;font-size:1.05rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px}
+  .item{display:flex;justify-content:space-between;align-items:center;padding:13px 2px;border-top:1px solid var(--line);cursor:pointer}
+  .item:first-child{border-top:0}
+  .item small{display:block;color:var(--mute);font-size:.82rem}
+  .x{color:var(--acc);font-weight:700}
+  .del{background:none;border:0;color:var(--mute);cursor:pointer;margin-left:10px;padding:4px}
+  .opt{display:flex;justify-content:space-between;align-items:center;padding:13px 0;border-top:1px solid var(--line);font-weight:600}
+  .opt:first-of-type{border-top:0}
+  .opt input[type=checkbox]{width:22px;height:22px;accent-color:var(--acc)}
+  .opt input[type=number]{width:80px;text-align:center;padding:8px}
+  .hide{display:none}
+  .toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:12px 16px;border-radius:12px;font-size:.9rem;z-index:30}
+  .toast:empty{display:none}
+  .vuoto{color:var(--mute)}
+  footer{color:var(--mute);font-size:.8rem;text-align:center;margin-top:20px}
+</style>
+</head>
+<body>
+<button class="tb" id="burger" onclick="menu(true)" aria-label="Menu"><svg class="ic" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+<button class="tb" id="back" onclick="indietro()" aria-label="Indietro"><svg class="ic" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
+<div class="velo" id="velo" onclick="menu(false)"></div>
+<nav class="drawer" id="drawer">
+  <b style="padding:4px 14px 14px;font-size:1.1rem">Le mie ore</b>
+  <button id="mDash" onclick="vai('Dash')"><svg class="ic" viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></svg>Dashboard</button>
+  <button id="mMesi" onclick="vai('Mesi')"><svg class="ic" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>I miei mesi</button>
+  <button onclick="esporta()"><svg class="ic" viewBox="0 0 24 24"><path d="M12 4v12M6 10l6 6 6-6M4 20h16"/></svg>Esporta archivio</button>
+  <label class="dbtn"><svg class="ic" viewBox="0 0 24 24"><path d="M12 16V4M6 10l6-6 6 6M4 20h16"/></svg>Importa archivio<input type="file" accept=".json,application/json" style="display:none" onchange="importa(this.files[0]);this.value=''"></label>
+  <button id="mImp" onclick="vai('Imp')" style="margin-top:auto"><svg class="ic" viewBox="0 0 24 24"><path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/></svg>Impostazioni</button>
+</nav>
+<div id="toast" class="toast"></div>
+
+<div class="wrap">
+  <div class="tit" id="tit">Dashboard</div>
+
+  <section id="vDash">
+    <div class="hero"><span id="hMese"></span><b id="hOre">0 h</b><span id="hSub"></span></div>
+    <div class="grid">
+      <div class="k"><span>Normali</span><b id="kOrd">0</b></div>
+      <div class="k"><span>Straordinari</span><b id="kStr" class="x">0</b></div>
+      <div class="k"><span>Giorni</span><b id="kGg">0</b></div>
+    </div>
+    <p id="ass" class="vuoto" style="margin:10px 2px 0;font-size:.9rem"></p>
+    <button class="btn" onclick="nuova()"><svg class="ic" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Segna una giornata</button>
+    <div class="card"><h2>Questo mese</h2><div id="listaDash"></div></div>
+  </section>
+
+  <section id="vForm" class="hide">
+    <div class="card">
+      <div class="chips" id="tipi"><button data-t="lavoro" onclick="setTipo('lavoro')">Lavoro</button><button data-t="ferie" onclick="setTipo('ferie')">Ferie</button><button data-t="permesso" onclick="setTipo('permesso')">Permesso</button><button data-t="malattia" onclick="setTipo('malattia')">Malattia</button></div>
+      <label class="l">Giorno</label><input id="data" type="date">
+      <div class="row" id="orari" style="margin-top:10px">
+        <div><label class="l">Entrata</label><input id="in" type="time"></div>
+        <div><label class="l">Uscita</label><input id="out" type="time"></div>
+        <div><label class="l">Pausa (min)</label><input id="pausa" type="number" min="0" step="5"></div>
+      </div>
+      <label class="l" style="margin-top:14px">Foto del rapportino</label>
+      <label class="btn" style="background:var(--k);color:var(--ink);margin-top:4px;font-weight:600"><svg class="ic" viewBox="0 0 24 24"><path d="M3 8a2 2 0 0 1 2-2h2l2-2h6l2 2h2a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><circle cx="12" cy="13" r="4"/></svg><span id="fotoLbl">Aggiungi foto</span><input type="file" accept="image/*" capture="environment" style="display:none" onchange="foto(this.files[0]);this.value=''"></label>
+      <img id="fotoPrev" alt="Rapportino" style="display:none;width:100%;border-radius:12px;margin-top:10px;border:1px solid var(--line)">
+      <button id="fotoDel" onclick="togliFoto()" style="display:none;background:none;border:0;color:var(--mute);text-decoration:underline;cursor:pointer;margin-top:8px;font-size:.85rem">Rimuovi foto</button>
+      <button class="btn" onclick="salva()">Salva giornata</button>
+    </div>
+  </section>
+
+  <section id="vMesi" class="hide"><div class="card" id="listaMesi"></div></section>
+  <section id="vMese" class="hide"><div class="card" id="listaMese"></div></section>
+
+  <section id="vImp" class="hide">
+    <div class="card">
+      <label class="opt"><span>Orario normale al giorno (ore)</span><input type="number" id="oNorm" min="1" max="12" step="0.5" onchange="setImp('norm',+this.value||8)"></label>
+      <label class="opt"><span>Orario abituale: entrata</span><input type="time" id="oIn" style="width:110px" onchange="setImp('in',this.value)"></label>
+      <label class="opt"><span>Orario abituale: uscita</span><input type="time" id="oOut" style="width:110px" onchange="setImp('out',this.value)"></label>
+      <label class="opt"><span>Pausa abituale (min)</span><input type="number" id="oPausa" min="0" step="5" onchange="setImp('pausa',+this.value||0)"></label>
+      <label class="opt"><span>Santo patrono (festivo)</span><input type="date" id="oPatr" style="width:150px" onchange="setImp('patrono',this.value?this.value.slice(5):'')"></label>
+      <label class="opt"><span>Tema scuro</span><input type="checkbox" id="oScuro" onchange="setImp('scuro',this.checked)"></label>
+      <label class="opt"><span>Testo più grande</span><input type="checkbox" id="oGrande" onchange="setImp('grande',this.checked)"></label>
+    </div>
+  </section>
+
+  <footer>Prototipo v0.2 · le tue ore restano solo su questo dispositivo.</footer>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+let mem = {};
+function load(k,d){ try{ const v=localStorage.getItem(k); return v?JSON.parse(v):d; }catch(e){ return k in mem?mem[k]:d; } }
+function store(k,v){ try{ localStorage.setItem(k,JSON.stringify(v)); }catch(e){ mem[k]=v; } }
+let giorni = load('ore_giorni',{});
+let imp = Object.assign({norm:load('ore_norm',8),in:'06:00',out:'15:00',pausa:60,scuro:false,grande:false,patrono:'10-09'}, load('ore_imp',{}));
+let vista='Dash', meseSel=null, daForm='Dash';
+
+const oggi = () => { const d=new Date(); return new Date(d-d.getTimezoneOffset()*60000).toISOString().slice(0,10); };
+const fmt = h => (Math.round(h*100)/100).toLocaleString('it-IT',{maximumFractionDigits:2}) + ' h';
+const min = t => { const [h,m]=t.split(':').map(Number); return h*60+m; };
+const TIPI={ferie:'Ferie',permesso:'Permesso',malattia:'Malattia'};
+const assente = g => g.tipo && g.tipo!=='lavoro';
+const ore = g => { if(assente(g)) return 0; let t=min(g.out)-min(g.in); if(t<0)t+=1440; return Math.max(0,(t-(g.pausa||0))/60); };
+function pasquetta(y){ const a=y%19,b=Math.floor(y/100),c=y%100,d=Math.floor(b/4),e=b%4,f=Math.floor((b+8)/25),g=Math.floor((b-f+1)/3),h=(19*a+b-d-g+15)%30,i=Math.floor(c/4),k=c%4,l=(32+2*e+2*i-h-k)%7,m=Math.floor((a+11*h+22*l)/451),mo=Math.floor((h+l-7*m+114)/31),da=((h+l-7*m+114)%31)+1; const p=new Date(Date.UTC(y,mo-1,da+1)); return p.toISOString().slice(5,10); }
+const FESTE=['01-01','01-06','04-25','05-01','06-02','08-15','11-01','12-08','12-25','12-26'];
+const festivo = d => FESTE.includes(d.slice(5)) || (imp.patrono && d.slice(5)===imp.patrono) || d.slice(5)===pasquetta(+d.slice(0,4));
+const weekend = d => { const g=new Date(d+'T12:00').getDay(); return g===0||g===6||festivo(d); };
+const straord = (d,h) => weekend(d) ? h : Math.max(0,h-imp.norm);
+const nomeMese = k => { const [y,m]=k.split('-'); return new Date(+y,+m-1,1).toLocaleDateString('it-IT',{month:'long',year:'numeric'}); };
+function toast(t){ $('toast').textContent=t; clearTimeout(window._tt); window._tt=setTimeout(()=>$('toast').textContent='',2500); }
+
+function totali(chiave){
+  const ks=Object.keys(giorni).filter(d=>d.slice(0,7)===chiave).sort().reverse();
+  let tot=0,str=0; ks.forEach(d=>{ const h=ore(giorni[d]); tot+=h; str+=straord(d,h); });
+  const ass={}; ks.forEach(d=>{ const t=giorni[d].tipo; if(t&&t!=='lavoro') ass[t]=(ass[t]||0)+1; });
+  return {ks,tot,str,ass,lav:ks.filter(d=>!assente(giorni[d])).length};
+}
+function riga(d){
+  const g=giorni[d], h=ore(g), s=straord(d,h);
+  const n=new Date(d+'T12:00').toLocaleDateString('it-IT',{weekday:'long',day:'numeric'});
+  return `<div class="item" onclick="apri('${d}')"><div><b style="text-transform:capitalize">${n}</b><small>${assente(g) ? TIPI[g.tipo] : g.in+'–'+g.out+' · pausa '+g.pausa+' min'}${g.foto?' · <svg class="ic" viewBox="0 0 24 24"><path d="M21 12.5l-8.5 8.5a5 5 0 0 1-7-7L14 5.5a3.5 3.5 0 0 1 5 5L10.5 19a2 2 0 0 1-3-3l7.5-7.5"/></svg> rapportino':''}</small></div><div style="display:flex;align-items:center"><b>${assente(g)?'—':fmt(h)}</b>${s>0?`&nbsp;<span class="x">+${fmt(s)}</span>`:''}<button class="del" onclick="elimina('${d}',event)" aria-label="Elimina"><svg class="ic" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div></div>`;
+}
+
+function dash(){
+  const k=oggi().slice(0,7), t=totali(k);
+  $('hMese').textContent='A '+nomeMese(k).split(' ')[0]+' hai lavorato';
+  $('hOre').textContent=fmt(t.tot);
+  $('hSub').textContent= t.ks.length ? (t.str>0?'di cui '+fmt(t.str)+' di straordinario':'nessuno straordinario') : 'segna la tua prima giornata';
+  $('kOrd').textContent=fmt(t.tot-t.str); $('kStr').textContent=fmt(t.str); $('kGg').textContent=t.lav;
+  const fr={ferie:n=>n+(n>1?' giorni':' giorno')+' di ferie',permesso:n=>n+(n>1?' permessi':' permesso'),malattia:n=>n+(n>1?' giorni':' giorno')+' di malattia'};
+  const as=Object.entries(t.ass).map(([k,n])=>fr[k](n)); $('ass').textContent = as.length ? 'Assenze: '+as.join(' · ') : '';
+  $('listaDash').innerHTML = t.ks.map(riga).join('') || '<p class="vuoto">Nessuna giornata segnata questo mese.</p>';
+}
+function mesi(){
+  const ks=[...new Set(Object.keys(giorni).map(d=>d.slice(0,7)))].sort().reverse();
+  $('listaMesi').innerHTML = ks.map(k=>{ const t=totali(k); return `<div class="item" onclick="meseSel='${k}';vai('Mese')"><div><b style="text-transform:capitalize">${nomeMese(k)}</b><small>${t.lav} giorni · ${fmt(t.str)} di straordinario</small></div><b>${fmt(t.tot)}</b></div>`; }).join('') || '<p class="vuoto">Ancora nessun mese.</p>';
+}
+function mese(){
+  const t=totali(meseSel);
+  $('listaMese').innerHTML = `<div style="display:flex;justify-content:space-between;margin-bottom:6px"><b>Totale</b><b>${fmt(t.tot)}${t.str>0?` <span class="x">(+${fmt(t.str)})</span>`:''}</b></div>` + (t.ks.map(riga).join('') || '<p class="vuoto">Nessun giorno.</p>');
+}
+
+let memF={}, fotoTmp, dbp=null;
+function db(){ if(!dbp) dbp=new Promise((res,rej)=>{ try{ const r=indexedDB.open('ore_foto',1); r.onupgradeneeded=()=>r.result.createObjectStore('f'); r.onsuccess=()=>res(r.result); r.onerror=()=>rej(r.error); }catch(e){ rej(e); } }); return dbp; }
+async function fGet(k){ try{ const d=await db(); return await new Promise(r=>{ const q=d.transaction('f').objectStore('f').get(k); q.onsuccess=()=>r(q.result||null); q.onerror=()=>r(null); }); }catch(e){ return memF[k]||null; } }
+async function fSet(k,v){ try{ const d=await db(); await new Promise((r,j)=>{ const t=d.transaction('f','readwrite'); if(v) t.objectStore('f').put(v,k); else t.objectStore('f').delete(k); t.oncomplete=r; t.onerror=()=>j(t.error); }); }catch(e){ if(v) memF[k]=v; else delete memF[k]; } }
+function riduci(file){ return new Promise((res,rej)=>{ const img=new Image(); img.onload=()=>{ const s=Math.min(1,1400/Math.max(img.width,img.height)); const c=document.createElement('canvas'); c.width=Math.round(img.width*s); c.height=Math.round(img.height*s); c.getContext('2d').drawImage(img,0,0,c.width,c.height); URL.revokeObjectURL(img.src); res(c.toDataURL('image/jpeg',0.7)); }; img.onerror=rej; img.src=URL.createObjectURL(file); }); }
+async function foto(f){ if(!f) return; try{ fotoTmp=await riduci(f); mostraFoto(fotoTmp); }catch(e){ toast('Non riesco a leggere questa foto'); } }
+function mostraFoto(src){ $('fotoPrev').style.display=src?'block':'none'; if(src) $('fotoPrev').src=src; $('fotoDel').style.display=src?'block':'none'; $('fotoLbl').textContent=src?'Cambia foto':'Aggiungi foto'; }
+function togliFoto(){ fotoTmp=null; mostraFoto(null); }
+async function tutteFoto(){ const out={}; for(const d of Object.keys(giorni)){ if(giorni[d].foto){ const s=await fGet(d); if(s) out[d]=s; } } return out; }
+async function esporta(){
+  menu(false); if(!Object.keys(giorni).length){ toast('Non hai ancora giornate da esportare'); return; }
+  const nome='le-mie-ore-'+oggi()+'.json'; const data=JSON.stringify({app:'le-mie-ore',v:1,giorni,imp,foto:await tutteFoto()});
+  let dl=null; try{ dl = window.claude&&window.claude.use ? await window.claude.use('downloads') : null; }catch(e){}
+  if(dl){ try{ await dl.save({filename:nome,data}); toast('✓ Archivio esportato, foto comprese'); }catch(e){ toast(e&&e.code==='declined'?'Esportazione annullata':'Esportazione non riuscita, riprova'); } return; }
+  try{ const f=new File([data],nome,{type:'application/json'}); if(navigator.canShare&&navigator.canShare({files:[f]})){ await navigator.share({files:[f]}); toast('✓ Archivio esportato'); return; } }catch(e){ if(e&&e.name==='AbortError') return; }
+  const u=URL.createObjectURL(new Blob([data],{type:'application/json'})); const l=document.createElement('a'); l.href=u; l.download=nome; document.body.appendChild(l); l.click(); l.remove(); toast('✓ Archivio esportato');
+}
+async function importa(f){
+  menu(false); if(!f) return;
+  try{ const j=JSON.parse(await f.text()); if(!j.giorni) throw 0; Object.assign(giorni,j.giorni); store('ore_giorni',giorni);
+    for(const d in (j.foto||{})) await fSet(d,j.foto[d]);
+    toast('✓ Importate '+Object.keys(j.giorni).length+' giornate'); render();
+  }catch(e){ toast('Questo file non è un archivio valido'); }
+}
+let tipo='lavoro';
+function setTipo(t){ tipo=t; document.querySelectorAll('#tipi button').forEach(b=>b.classList.toggle('on',b.dataset.t===t)); $('orari').style.display = t==='lavoro' ? '' : 'none'; }
+function nuova(d){
+  const ultimo = Object.keys(giorni).filter(k=>!assente(giorni[k])).sort().pop();
+  const g = d ? giorni[d] : null, base = g || (ultimo ? giorni[ultimo] : imp);
+  $('data').value = d || oggi(); $('in').value = base.in; $('out').value = base.out; $('pausa').value = base.pausa;
+  setTipo(g&&g.tipo?g.tipo:'lavoro');
+  fotoTmp=undefined; mostraFoto(null); if(d && g && g.foto) fGet(d).then(s=>{ if(s && fotoTmp===undefined) mostraFoto(s); });
+  daForm = vista; vai('Form');
+}
+function apri(d){ nuova(d); }
+function salva(){
+  const d=$('data').value, g={tipo,in:$('in').value,out:$('out').value,pausa:+$('pausa').value||0};
+  if(!d||(tipo==='lavoro'&&(!g.in||!g.out))) return;
+  if(fotoTmp!==undefined){ g.foto=!!fotoTmp; fSet(d,fotoTmp); } else if(giorni[d]&&giorni[d].foto) g.foto=true;
+  giorni[d]=g; store('ore_giorni',giorni);
+  toast('✓ Salvata: '+(tipo==='lavoro'?fmt(ore(g)):TIPI[tipo]));
+  vai(daForm==='Mese'?'Mese':'Dash');
+}
+function elimina(d,e){ e.stopPropagation(); delete giorni[d]; store('ore_giorni',giorni); fSet(d,null); render(); toast('Giornata eliminata'); }
+
+function setImp(k,v){ imp[k]=v; store('ore_imp',imp); applyImp(); render(); }
+function applyImp(){
+  document.body.classList.toggle('dark',imp.scuro); document.documentElement.classList.toggle('big',imp.grande);
+  $('oNorm').value=imp.norm; $('oIn').value=imp.in; $('oOut').value=imp.out; $('oPausa').value=imp.pausa; $('oScuro').checked=imp.scuro; $('oPatr').value = imp.patrono ? new Date().getFullYear()+'-'+imp.patrono : ''; $('oGrande').checked=imp.grande;
+}
+
+function menu(o){ $('drawer').classList.toggle('open',o); $('velo').classList.toggle('open',o); }
+function indietro(){ if(vista==='Form') vai(daForm==='Mese'?'Mese':'Dash'); else if(vista==='Mese') vai('Mesi'); else vai('Dash'); }
+function render(){ if(vista==='Dash')dash(); if(vista==='Mesi')mesi(); if(vista==='Mese')mese(); }
+function vai(v){
+  vista=v; menu(false);
+  $('tit').textContent = {Dash:'Dashboard',Form:'Segna una giornata',Mesi:'I miei mesi',Mese:meseSel?nomeMese(meseSel):'',Imp:'Impostazioni'}[v];
+  $('tit').style.textTransform = v==='Mese' ? 'capitalize' : 'none';
+  ['Dash','Form','Mesi','Mese','Imp'].forEach(k=>$('v'+k).classList.toggle('hide',k!==v));
+  ['Dash','Mesi','Imp'].forEach(k=>$('m'+k).classList.toggle('on',k===v));
+  $('back').style.display = (v==='Form'||v==='Mese') ? 'flex' : 'none';
+  render(); window.scrollTo({top:0});
+}
+applyImp(); vai('Dash');
+</script>
+<a href="https://wa.me/?text=Guarda%20questa%20app%20per%20segnare%20le%20ore%20e%20gli%20straordinari%2C%20gratis%20https%3A//createtool-1.github.io/le-mie-ore/" target="_blank" rel="noopener" style="position:fixed;right:14px;bottom:14px;z-index:50;background:#2d6a52;color:#fff;font:600 13px Inter,system-ui,sans-serif;padding:9px 14px;border-radius:20px;text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,.2)">Manda a un collega</a>
+</body>
+</html>
