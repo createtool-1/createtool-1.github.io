@@ -27,7 +27,7 @@ function card(dove,prima){var b=leggiB();if(!b||!dove)return;var anno=b.anno||ne
  var n=document.createElement('div');n.style.cssText='font-size:26px;font-weight:700;margin:4px 0';n.textContent='circa '+eur(s.netto)+' netti';
  var p=document.createElement('div');p.style.cssText='font-size:13.5px;line-height:1.5;opacity:.8';
  p.textContent='Lordo '+eur(s.lordo)+' per '+s.mesi+(s.mesi===1?' mese':' mesi')+' lavorati nel '+anno+'. Arriva con la busta di dicembre. Stima: contributi INPS e IRPEF al '+s.aliquota+'%, senza detrazioni né addizionali, quindi il netto reale può essere un po\' diverso.';
- d.appendChild(t);d.appendChild(n);d.appendChild(p);if(prima&&prima.parentNode===dove)dove.insertBefore(d,prima);else dove.appendChild(d);}
+ d.appendChild(t);d.appendChild(n);d.appendChild(p);if(prima&&prima.parentNode)prima.parentNode.insertBefore(d,prima);else dove.insertBefore(d,dove.children[1]||null);}
 var inp=document.getElementById('file');if(inp){var prev=inp.onchange;
  inp.onchange=async function(e){var res=prev?prev(e):null;try{await res;}catch(x){}
   var f=e.target.files&&e.target.files[0];if(!f||!(/pdf/i.test(f.type)||/\.pdf$/i.test(f.name||''))||!window.pdfjsLib)return;
@@ -36,6 +36,6 @@ var inp=document.getElementById('file');if(inp){var prev=inp.onchange;
     var old=leggiB();if(!old||!old.anno||b.anno>=old.anno)localStorage.setItem('base13',JSON.stringify(b));
     setTimeout(function(){card(document.getElementById('risultato'),document.getElementById('voci'));},300);}}catch(x){}};}
 if(typeof window.mostra==='function'){var m0=window.mostra;window.mostra=function(r){m0(r);setTimeout(function(){card(document.getElementById('risultato'),document.getElementById('voci'));},50);};}
-if(typeof window.mostraArchivio==='function'){var a0=window.mostraArchivio;window.mostraArchivio=function(){a0.apply(this,arguments);card(document.getElementById('vDash'));};}
+if(typeof window.mostraDash==='function'){var a0=window.mostraDash;window.mostraDash=function(){a0.apply(this,arguments);card(document.getElementById('vDash'));};}
 card(document.getElementById('vDash'));
 })(this);
