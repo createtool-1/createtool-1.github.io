@@ -271,7 +271,7 @@ $('salva').onclick = () => {
 $('file').onchange = async e => {
   const f = e.target.files[0]; if (!f) return;
   avviso(''); $('risultato').classList.add('hide'); $('salva').textContent='Salva nel mio archivio';
-  if (!/pdf/i.test(f.type) && !/\.pdf$/i.test(f.name)) { avviso('Gli screenshot arrivano nella prossima versione. Per ora carica il PDF della busta paga.'); return; }
+  if (!/pdf/i.test(f.type) && !/\.pdf$/i.test(f.name)) { avviso('Carica il PDF della busta paga: è il file che ti manda l'azienda o il consulente.'); return; }
   try {
     if (!window.pdfjsLib) throw new Error('lettore non caricato');
     pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
@@ -394,4 +394,3 @@ vai('Dash');
 <script data-goatcounter="https://createtool.goatcounter.com/count" async src="https://gc.zgo.at/count.v4.js" crossorigin="anonymous" integrity="sha384-nRw6qfbWyJha9LhsOtSb2YJDyZdKvvCFh0fJYlkquSFjUxp9FVNugbfy8q1jdxI+"></script>
 <script src="../tutorial.js?v=2" data-tool="busta"></script>
 <script src="../incolla.js?v=1"></script>
-<script src="../ocr.js?v=8"></script>
