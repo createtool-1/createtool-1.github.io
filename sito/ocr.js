@@ -34,7 +34,7 @@ function cerca(lines,re){for(var i=0;i<lines.length;i++){if(re.test(lines[i])){v
 function completa(r,lines){
  var T=lines.join('\n').toUpperCase();
  if(!r.mese){for(var m=0;m<12;m++){var re=new RegExp(MESI[m]+'\\s*[\\/-]?\\s*(20\\d\\d)');var x=T.match(re);if(x){r.mese=MESI[m];r.meseNum=m+1;r.anno=+x[1];break;}}}
- for(var z=0;z<lines.length;z++){var U=lines[z].toUpperCase();if(/COMPETENZ/.test(U)&&/TRATTENUT/.test(U)&&/NETTO/.test(U)){for(var y=z+1;y<Math.min(lines.length,z+4);y++){var a=importi(lines[y]);if(a.length>=3){if(r.netto==null)r.netto=a[a.length-1];if(r.competenze==null||r.competenze===r.trattenute)r.competenze=a[0];if(r.trattenute==null||r.trattenute===r.competenze)r.trattenute=a[1];break;}}break;}}
+ for(var z=0;z<lines.length;z++){var U=lines[z].toUpperCase();if(/COMPETENZ/.test(U)&&/TRATTENUT/.test(U)){for(var y=z+1;y<Math.min(lines.length,z+4);y++){var a=importi(lines[y]);if(a.length>=3){r.competenze=a[0];r.trattenute=a[1];r.netto=a[a.length-1];break;}}break;}}
  if(r.netto==null)r.netto=cerca(lines,/NETTO/i);
  if(r.competenze==null)r.competenze=cerca(lines,/TOT\w*\.?\s*COMPETENZ/i);
  if(r.trattenute==null)r.trattenute=cerca(lines,/TOT\w*\.?\s*TRATTENUT/i);
