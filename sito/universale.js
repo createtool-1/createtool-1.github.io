@@ -16,6 +16,17 @@ function valore(rows,L){if(!L)return null;var best=null,bd=1e9;
  return best?num(best.s):null;}
 function cerca(rows,res){for(var i=0;i<res.length;i++){var v=valore(rows,etichetta(rows,res[i]));if(v!=null)return v;}return null;}
 function rigaNumeri(rows,re){for(var i=0;i<rows.length;i++){if(re.test(rows[i].t.toUpperCase())){var n=rows[i].c.map(function(c){return c.s.replace(/[€\s]/g,'');}).filter(function(s){return AMT.test(s);}).map(num);if(n.length)return n;}}return null;}
+function decodifica(items){return items.map(function(it){var s=it.str||'';if(!/[-]/.test(s))return it;var o={};for(var k in it)o[k]=it[k];
+ o.str=s.replace(/[-]/g,function(c){var k=c.charCodeAt(0)-0xF000;return String.fromCharCode(k>=160?288-k:k);});return o;});}
+var MESIT=['GENNAIO','FEBBRAIO','MARZO','APRILE','MAGGIO','GIUGNO','LUGLIO','AGOSTO','SETTEMBRE','OTTOBRE','NOVEMBRE','DICEMBRE'];
+function ranocchi(items){var rows=righe(items),T=rows.map(function(r){return r.t;}).join('\n');if(!/Ranocchi/i.test(T))return null;
+ var r={mese:null,anno:null,meseNum:null,netto:null,competenze:null,trattenute:null,ferieResidue:null,rolResidui:null,tfrMese:null,tfrProgressivo:null,voci:[],formato:'Ranocchi'};
+ var m=T.toUpperCase().match(new RegExp('\\b('+MESIT.join('|')+')\\s+(20\\d\\d)\\b'));if(m){r.mese=m[1];r.anno=+m[2];r.meseNum=MESIT.indexOf(m[1])+1;}
+ function ultimo(y){for(var i=0;i<rows.length;i++)if(Math.abs(rows[i].y-y)<6){var n=rows[i].c.map(function(c){return c.s;}).filter(function(s){return AMT.test(s);});if(n.length)return num(n[n.length-1]);}return null;}
+ r.competenze=ultimo(458);r.trattenute=ultimo(306);r.netto=ultimo(187);
+ rows.forEach(function(row){if(row.y<470||row.y>620)return;var mm=row.t.match(/^\s*(\d{1,5})\s+([A-Za-z][^0-9]{2,}?)\s{2,}/);if(!mm)return;
+  var n=row.c.map(function(c){return c.s;}).filter(function(s){return AMT.test(s);});r.voci.push({codice:mm[1],descrizione:mm[2].trim(),importo:n.length?num(n[n.length-1]):null});});
+ return r.netto!=null?r:null;}
 function leggi(items){
  var rows=righe(items),T=rows.map(function(r){return r.t;}).join('\n').toUpperCase();
  var r={mese:null,anno:null,meseNum:null,netto:null,competenze:null,trattenute:null,ferieResidue:null,rolResidui:null,tfrMese:null,tfrProgressivo:null,voci:[],formato:'universale'};
@@ -37,16 +48,16 @@ function leggi(items){
   var parti=mm[2].split(/\s{2,}/),d=parti[0].trim(),n=row.c.map(function(c){return c.s.replace(/[€\s]/g,'');}).filter(function(s){return /,\d{2}-?$/.test(s)&&AMT.test(s);});
   if(/[A-Za-z]{3}/.test(d))r.voci.push({codice:mm[1],descrizione:d,importo:n.length?num(n[n.length-1]):null});});
  return r;}
-var api={leggi:leggi};
+var api={leggi:leggi,decodifica:decodifica,ranocchi:ranocchi};
 if(typeof module!=='undefined')module.exports=api;else root.BustaUniversale=api;
 if(typeof document==='undefined')return;
 var inp=document.getElementById('file');if(!inp)return;var orig=inp.onchange;
 inp.onchange=async function(e){var f=e.target.files&&e.target.files[0];if(!f||!(/pdf/i.test(f.type)||/\.pdf$/i.test(f.name||'')))return orig(e);
  try{if(!window.pdfjsLib)return orig(e);pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
   var pdf=await pdfjsLib.getDocument({data:await f.arrayBuffer()}).promise,items=[],lines=[];
-  for(var p=1;p<=pdf.numPages;p++){var tc=await (await pdf.getPage(p)).getTextContent();if(p===1)items=tc.items;lines=lines.concat(BustaParser.itemsToLines(tc.items));}
+  for(var p=1;p<=pdf.numPages;p++){var tc=await (await pdf.getPage(p)).getTextContent(),di=decodifica(tc.items);if(p===1)items=di;lines=lines.concat(BustaParser.itemsToLines(di));}
   var j=BustaParser.parse(lines);if(j.netto)return orig(e);
-  var r=leggi(items);if(r.netto==null)return orig(e);
+  var r=ranocchi(items)||leggi(items);if(r.netto==null)return orig(e);
   avviso('');$('risultato').classList.add('hide');$('salva').textContent='Salva nel mio archivio';ultimo=r;if(r.mese)$('salva').click();mostra(r);
  }catch(err){return orig(e);}};
 })(this);
