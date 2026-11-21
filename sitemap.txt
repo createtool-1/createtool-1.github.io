@@ -3,3 +3,4 @@ https://createtool-1.github.io/sito/busta-paga/
 https://createtool-1.github.io/sito/le-mie-ore/
 https://createtool-1.github.io/sito/dizionario/
 https://createtool-1.github.io/sito/lordo-netto/
+https://createtool-1.github.io/sito/naspi/
