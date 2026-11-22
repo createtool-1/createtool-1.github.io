@@ -24,7 +24,17 @@ css.textContent=".lc-ic{width:1.05em;height:1.05em;vertical-align:-.17em;margin-
 ".lc-drawer b{padding:4px 14px 14px;font:700 1.1rem Inter,system-ui,sans-serif;color:#1b2420}"+
 "body.lc-page{padding-top:62px;background:#f4f2ec}"+
 "body.lc-page .box,body.lc-page a.card,body.lc-page .voce{border-radius:18px;border-color:#e6e2d8;box-shadow:0 1px 2px rgba(20,30,25,.05)}"+
-"body.lc-page h1{letter-spacing:-.02em}";
+"body.lc-page h1{letter-spacing:-.02em}"+
+".lc-t{display:flex;justify-content:space-between;align-items:center;margin-top:auto;padding:12px 14px;font:600 .95rem Inter,system-ui,sans-serif;color:inherit}.lc-t input{width:22px;height:22px;accent-color:#2d6a52}"+
+"body.lc-page.lc-dark{background:#121614;color:#e9eee9;color-scheme:dark}"+
+"body.lc-dark .box,body.lc-dark a.card,body.lc-dark .voce,body.lc-dark input,body.lc-dark select,body.lc-dark #q{background:#1c2320!important;border-color:#2c3631!important;color:#e9eee9}"+
+"body.lc-dark .sub,body.lc-dark small,body.lc-dark footer,body.lc-dark a.card span,body.lc-dark .big .s,body.lc-dark .tag{color:#9aa49e!important}"+
+"body.lc-dark a,body.lc-dark a.card b,body.lc-dark .piu,body.lc-dark .big .n,body.lc-dark .es b{color:#7fb39b}body.lc-dark a.cta{color:#fff}"+
+"body.lc-dark td{border-color:#2c3631}body.lc-dark .es{background:#232b27}body.lc-dark .voce p{color:#c9d1cc}"+
+"body.lc-dark .lc-bar{background:rgba(18,22,20,.92);border-color:#2c3631}body.lc-dark .lc-burger,body.lc-dark .lc-drawer{background:#1c2320;color:#e9eee9;border-color:#2c3631}body.lc-dark .lc-brand,body.lc-dark .lc-drawer b,body.lc-dark .lc-a{color:#e9eee9}body.lc-dark .lc-a.on{color:#fff}";
+function rd(k){try{return JSON.parse(localStorage.getItem(k))||{}}catch(e){return {}}}
+function scuro(){var b=rd("busta_imp"),o=rd("ore_imp");if(b.scuro===undefined&&o.scuro===undefined)return !!(window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches);return !!(b.scuro||o.scuro)}
+function setScuro(v){["busta_imp","ore_imp"].forEach(function(k){var o=rd(k);o.scuro=v;try{localStorage.setItem(k,JSON.stringify(o))}catch(e){}});document.body.classList.toggle("lc-dark",v)}
 document.head.appendChild(css);
 var dr=document.getElementById("drawer");
 if(dr){
@@ -39,10 +49,11 @@ if(dr){
  var bar=document.createElement("div");bar.className="lc-bar";
  bar.innerHTML='<button class="lc-burger" aria-label="Menu">'+ic('<path d="M4 7h16M4 12h16M4 17h16"/>')+'</button><a class="lc-brand" href="/sito/">'+NOME+'</a>';
  var velo=document.createElement("div");velo.className="lc-velo";
- var d=document.createElement("nav");d.className="lc-drawer";d.innerHTML="<b>"+NOME+"</b>"+voci();
+ var d=document.createElement("nav");d.className="lc-drawer";d.innerHTML="<b>"+NOME+"</b>"+voci()+'<label class="lc-t">Tema scuro<input type="checkbox"></label>';
  document.body.appendChild(bar);document.body.appendChild(velo);document.body.appendChild(d);
  function m(o){d.classList.toggle("open",o);velo.classList.toggle("open",o)}
- bar.firstChild.onclick=function(){m(true)};velo.onclick=function(){m(false)};
+ bar.firstChild.onclick=function(){m(true)};
+ var ck=d.querySelector(".lc-t input");ck.checked=scuro();document.body.classList.toggle("lc-dark",ck.checked);ck.onchange=function(){setScuro(ck.checked)};velo.onclick=function(){m(false)};
  var back=document.querySelector('main > p > a[href="../"]');if(back&&back.parentNode)back.parentNode.remove();
 }
 })();
