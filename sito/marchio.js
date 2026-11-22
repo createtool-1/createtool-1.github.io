@@ -8,7 +8,7 @@ var T=[["/sito/","Home",'<path d="M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1
 ["/sito/naspi/","Calcolo NASpI",'<path d="M12 3v18M17 7H9.5a3 3 0 0 0 0 6h5a3 3 0 0 1 0 6H6"/>']];
 var p=location.pathname.replace(/index\.html$/,"");if(p.slice(-1)!=="/")p+="/";
 function ic(d){return '<svg class="lc-ic" viewBox="0 0 24 24">'+d+'</svg>'}
-function voci(){return T.map(function(t){return '<a class="lc-a'+(p===t[0]?' on':'')+'" href="'+t[0]+'">'+ic(t[2])+t[1]+'</a>'}).join("")}
+function voci(x){return T.filter(function(t){return !(x&&p===t[0])}).map(function(t){return '<a class="lc-a'+(p===t[0]?' on':'')+'" href="'+t[0]+'">'+ic(t[2])+t[1]+'</a>'}).join("")}
 var css=document.createElement("style");
 css.textContent=".lc-ic{width:1.05em;height:1.05em;vertical-align:-.17em;margin-right:10px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}"+
 ".lc-a{display:flex;align-items:center;padding:11px 14px;border-radius:10px;font:600 .98rem Inter,system-ui,-apple-system,sans-serif;color:var(--ink,#1b2420);text-decoration:none}"+
@@ -52,7 +52,7 @@ if(dr){
  var tb=dr.querySelector("b");if(tb)tb.textContent=NOME;
  var imp=document.getElementById("tImp")||document.getElementById("mImp");
  var tgt=imp&&imp.previousElementSibling&&/Tutorial/.test(imp.previousElementSibling.textContent)?imp.previousElementSibling:imp;
- var box=document.createElement("div");box.innerHTML='<div class="lc-l">Altri strumenti</div>'+voci();
+ var box=document.createElement("div");box.innerHTML='<div class="lc-l">Altri strumenti</div>'+voci(1);var dz=document.getElementById("tDiz");if(dz&&tb)dr.insertBefore(dz,tb.nextSibling);
  while(box.firstChild){tgt?dr.insertBefore(box.firstChild,tgt):dr.appendChild(box.firstChild)}
  if(tgt&&tgt!==imp){tgt.style.marginTop="12px"}
 }else{
