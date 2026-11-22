@@ -14,6 +14,10 @@ function get(key){return db().then(function(d){return new Promise(function(ok){v
 var fileIn=null,fi=document.getElementById("file");if(fi)fi.addEventListener("change",function(){fileIn=fi.files&&fi.files[0]||null},true);
 if(typeof window.mostra==="function"){var m0=window.mostra;window.mostra=function(r){if(fileIn&&r&&r.mese&&r.anno&&/pdf/i.test(fileIn.type+fileIn.name)){put(k(r),fileIn);}fileIn=null;return m0.apply(this,arguments)}}
 function cap(s){s=String(s||"");return s.charAt(0)+s.slice(1).toLowerCase()}
+function vedi(f,tit){var L=document.getElementById("arcL");L.onclick=null;L.innerHTML='<button class="btn light" id="arcBack" style="margin:0 0 12px">← Torna all\'archivio</button><div style="font-weight:700;margin-bottom:8px">'+tit+'</div><div id="arcPdf"><p style="color:var(--mute)">Apro la busta…</p></div>';document.getElementById("arcBack").onclick=lista;window.scrollTo({top:0});
+ f.arrayBuffer().then(function(buf){pdfjsLib.GlobalWorkerOptions.workerSrc="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";return pdfjsLib.getDocument({data:buf}).promise}).then(function(pdf){var box=document.getElementById("arcPdf");box.innerHTML="";var W=box.clientWidth||340,ch=Promise.resolve();
+  for(var n=1;n<=pdf.numPages;n++)(function(n){ch=ch.then(function(){return pdf.getPage(n).then(function(pg){var v0=pg.getViewport({scale:1}),vp=pg.getViewport({scale:W/v0.width*Math.max(2,window.devicePixelRatio||1)}),c=document.createElement("canvas");c.width=vp.width;c.height=vp.height;c.style.cssText="width:100%;border-radius:8px;border:1px solid var(--line);margin-bottom:10px;background:#fff";box.appendChild(c);return pg.render({canvasContext:c.getContext("2d"),viewport:vp}).promise})})})(n);return ch})
+ .catch(function(){var x=document.getElementById("arcPdf");if(x)x.innerHTML="<p>Non riesco a mostrare questo PDF.</p>"})}
 function lista(){var a=(typeof archivioLeggi==="function"?archivioLeggi():null)||[];
  a.sort(function(x,y){return (y.anno-x.anno)||(y.meseNum-x.meseNum)});window._arch=a;
  var L=document.getElementById("arcL");
@@ -22,8 +26,8 @@ function lista(){var a=(typeof archivioLeggi==="function"?archivioLeggi():null)|
  L.onclick=function(e){var del=e.target.closest("[data-del]");
   if(del){e.stopPropagation();var b=a[+del.dataset.del];if(b&&confirm("Eliminare la busta di "+cap(b.mese)+" "+b.anno+"?")){var all=archivioLeggi()||[];archivioScrivi(all.filter(function(x){return !(x.mese===b.mese&&x.anno===b.anno)}));put(k(b),null);lista()}return}
   var sp=e.target.closest("[data-sp]");if(sp){e.stopPropagation();window._arch=a;apri(+sp.dataset.sp);return}
-  var r=e.target.closest("[data-i]");if(!r)return;var b2=a[+r.dataset.i],w=window.open("","_blank");
-  get(k(b2)).then(function(f){if(f){var u=URL.createObjectURL(f);if(w)w.location.href=u;else location.href=u}else{if(w)w.close();window._arch=a;apri(+r.dataset.i);if(typeof avviso==="function")avviso("Il PDF di questo mese non è salvato: ricaricalo una volta e da ora resta nell'archivio.")}})};}
+  var r=e.target.closest("[data-i]");if(!r)return;var b2=a[+r.dataset.i];
+  get(k(b2)).then(function(f){if(f){vedi(f,cap(b2.mese)+" "+b2.anno)}else{window._arch=a;apri(+r.dataset.i);if(typeof avviso==="function")avviso("Il PDF di questo mese non è salvato: ricaricalo una volta e da ora resta nell'archivio.")}})};}
 var orig=window.vai;
 window.vai=function(v,back){
  if(v!=="Arc"){sec.classList.add("hide");bt.classList.remove("on");return orig.apply(this,arguments)}
