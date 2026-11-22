@@ -36,6 +36,18 @@ function rd(k){try{return JSON.parse(localStorage.getItem(k))||{}}catch(e){retur
 function scuro(){var b=rd("busta_imp"),o=rd("ore_imp");if(b.scuro===undefined&&o.scuro===undefined)return !!(window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches);return !!(b.scuro||o.scuro)}
 function setScuro(v){["busta_imp","ore_imp"].forEach(function(k){var o=rd(k);o.scuro=v;try{localStorage.setItem(k,JSON.stringify(o))}catch(e){}});document.body.classList.toggle("lc-dark",v)}
 document.head.appendChild(css);
+var N=[["/sito/","Home",0],["/sito/busta-paga/","Busta",1],["/sito/le-mie-ore/","Ore",2],["/sito/lordo-netto/","Netto",3],["/sito/naspi/","NASpI",4]];
+var cs2=document.createElement("style");
+cs2.textContent=".lc-nav{position:fixed;left:0;right:0;bottom:0;height:calc(64px + env(safe-area-inset-bottom));padding-bottom:env(safe-area-inset-bottom);display:flex;background:rgba(255,255,255,.97);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border-top:1px solid #e6e2d8;z-index:17}"+
+".lc-nav a{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font:600 .7rem Inter,system-ui,-apple-system,sans-serif;color:#727a75;text-decoration:none}"+
+".lc-nav .lc-ic{margin:0;width:23px;height:23px}.lc-nav a.on{color:#2d6a52}"+
+"body{padding-bottom:calc(76px + env(safe-area-inset-bottom))!important}"+
+"a[href*='wa.me']{bottom:calc(76px + env(safe-area-inset-bottom))!important}.toast{bottom:calc(80px + env(safe-area-inset-bottom))!important}"+
+"body.dark .lc-nav,body.lc-dark .lc-nav{background:rgba(28,35,32,.97);border-color:#2c3631}body.dark .lc-nav a,body.lc-dark .lc-nav a{color:#9aa49e}body.dark .lc-nav a.on,body.lc-dark .lc-nav a.on{color:#7fb39b}";
+document.head.appendChild(cs2);
+var nav=document.createElement("nav");nav.className="lc-nav";
+nav.innerHTML=N.map(function(n){return '<a href="'+n[0]+'"'+(p===n[0]?' class="on"':'')+'>'+ic(T[n[2]][2])+n[1]+'</a>'}).join("");
+document.body.appendChild(nav);
 var dr=document.getElementById("drawer");
 if(dr){
  var tb=dr.querySelector("b");if(tb)tb.textContent=NOME;
