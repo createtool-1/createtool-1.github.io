@@ -5,8 +5,7 @@ var T=[["/sito/","Home",'<path d="M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1
 ["/sito/busta-paga/","Busta paga",'<path d="M6 3h9l3 3v15H6z"/><path d="M9 12h6M9 16h6"/>'],
 ["/sito/le-mie-ore/","Le mie ore",'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>'],
 ["/sito/lordo-netto/","Da lordo a netto",'<path d="M4 7h16M4 12h10M4 17h6"/>'],
-["/sito/naspi/","Calcolo NASpI",'<path d="M12 3v18M17 7H9.5a3 3 0 0 0 0 6h5a3 3 0 0 1 0 6H6"/>'],
-["/sito/dizionario/","Dizionario",'<path d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3z"/><path d="M5 17a3 3 0 0 1 3-3h11"/>']];
+["/sito/naspi/","Calcolo NASpI",'<path d="M12 3v18M17 7H9.5a3 3 0 0 0 0 6h5a3 3 0 0 1 0 6H6"/>']];
 var p=location.pathname.replace(/index\.html$/,"");if(p.slice(-1)!=="/")p+="/";
 function ic(d){return '<svg class="lc-ic" viewBox="0 0 24 24">'+d+'</svg>'}
 function voci(){return T.map(function(t){return '<a class="lc-a'+(p===t[0]?' on':'')+'" href="'+t[0]+'">'+ic(t[2])+t[1]+'</a>'}).join("")}
