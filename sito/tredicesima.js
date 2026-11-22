@@ -35,7 +35,6 @@ var inp=document.getElementById('file');if(inp){var prev=inp.onchange;
    if(b.retr){b.anno=(window.ultimo&&ultimo.anno)||(typeof ultimo!=='undefined'&&ultimo&&ultimo.anno)||new Date().getFullYear();
     var old=leggiB();if(!old||!old.anno||b.anno>=old.anno)localStorage.setItem('base13',JSON.stringify(b));
     setTimeout(function(){card(document.getElementById('risultato'),document.getElementById('voci'));},300);}}catch(x){}};}
-if(typeof window.mostra==='function'){var m0=window.mostra;window.mostra=function(r){m0(r);setTimeout(function(){card(document.getElementById('risultato'),document.getElementById('voci'));},50);};}
 if(typeof window.mostraDash==='function'){var a0=window.mostraDash;window.mostraDash=function(){a0.apply(this,arguments);card(document.getElementById('vDash'));};}
 card(document.getElementById('vDash'));
 })(this);
