@@ -52,7 +52,7 @@ if(dr){
  var tb=dr.querySelector("b");if(tb)tb.textContent=NOME;
  var imp=document.getElementById("tImp")||document.getElementById("mImp");
  var tgt=imp&&imp.previousElementSibling&&/Tutorial/.test(imp.previousElementSibling.textContent)?imp.previousElementSibling:imp;
- var box=document.createElement("div");box.innerHTML='<div class="lc-l">Altri strumenti</div>'+voci(1);var dz=document.getElementById("tDiz");if(dz&&tb)dr.insertBefore(dz,tb.nextSibling);
+ var box=document.createElement("div");box.innerHTML='<div class="lc-l">Altri strumenti</div>'+voci(1);var dz=document.getElementById("tDiz");var an=document.getElementById("tAnno");if(dz&&an)dr.insertBefore(dz,an.nextSibling);
  while(box.firstChild){tgt?dr.insertBefore(box.firstChild,tgt):dr.appendChild(box.firstChild)}
  if(tgt&&tgt!==imp){tgt.style.marginTop="12px"}
 }else{
