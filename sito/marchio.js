@@ -76,4 +76,21 @@ var vp=document.querySelector('meta[name="viewport"]');if(vp)vp.setAttribute("co
 var cs4=document.createElement("style");cs4.textContent="html,body{touch-action:manipulation}input,select,textarea{font-size:16px!important}";document.head.appendChild(cs4);
 ["gesturestart","gesturechange"].forEach(function(t){document.addEventListener(t,function(e){e.preventDefault()},{passive:false})});
 document.addEventListener("touchmove",function(e){if(e.touches&&e.touches.length>1)e.preventDefault()},{passive:false});
+
+/* Stile app dentro gli strumenti (Netto, NASpI, dizionario) */
+var cs5=document.createElement("style");
+cs5.textContent="body.lc-page main{max-width:560px;padding:22px 18px 30px}"+
+"body.lc-page h1{font-size:30px;line-height:1.1;letter-spacing:-.03em;margin:6px 0 8px}body.lc-page p.sub{font-size:15px;color:#727a75;margin:0 0 18px}"+
+"body.lc-page .box{border-radius:22px!important;padding:18px}"+
+"body.lc-page .box label:not(.chk){font-size:11.5px;text-transform:uppercase;letter-spacing:.07em;color:#727a75;font-weight:700;margin:14px 0 6px}"+
+"body.lc-page .box input:not([type=checkbox]),body.lc-page .box select{border-radius:14px;background:#f7f6f2;border:1px solid #e6e2d8;padding:13px 14px;font-weight:600;-webkit-appearance:none;appearance:none}"+
+"body.lc-page .box select{background-image:linear-gradient(45deg,transparent 50%,#727a75 50%),linear-gradient(135deg,#727a75 50%,transparent 50%);background-position:calc(100% - 18px) 55%,calc(100% - 13px) 55%;background-size:5px 5px;background-repeat:no-repeat;padding-right:32px}"+
+"body.lc-page label.chk{font-size:15px;font-weight:500}"+
+"body.lc-page #out.big{background:#1b2420;color:#fff;border-color:#1b2420;padding:22px 18px}body.lc-page #out.big .s{color:#a9b5ae}body.lc-page #out.big .n{color:#fff;font-size:40px;letter-spacing:-.02em;margin:4px 0}"+
+"body.lc-page #out.no .n{color:#ffb4a8;font-size:21px}"+
+"body.lc-page .cta{border-radius:18px;padding:17px}body.lc-page h2{font-size:20px;letter-spacing:-.02em;margin:28px 0 8px}"+
+"body.lc-page td{padding:9px 0}"+
+"body.lc-dark .box input:not([type=checkbox]),body.lc-dark .box select{background:#161c19!important}"+
+"body.lc-dark #out.big{background:#e9eee9!important;color:#121614}body.lc-dark #out.big .s{color:#4d5a53!important}body.lc-dark #out.big .n{color:#121614!important}body.lc-dark #out.no .n{color:#a33!important}";
+document.head.appendChild(cs5);
 })();
