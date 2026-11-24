@@ -47,4 +47,27 @@ if(dr){
  bar.lastChild.onclick=function(){setScuro(!document.body.classList.contains("lc-dark"))};
  var back=document.querySelector('main > p > a[href="../"]');if(back&&back.parentNode)back.parentNode.remove();
 }
+
+/* App installabile (PWA) */
+function hd(t,a){var e=document.createElement(t);for(var k in a)e.setAttribute(k,a[k]);document.head.appendChild(e)}
+if(!document.querySelector('link[rel="manifest"]'))hd("link",{rel:"manifest",href:"/sito/manifest.webmanifest"});
+hd("link",{rel:"apple-touch-icon",href:"/sito/apple-icon.png"});hd("meta",{name:"theme-color",content:"#f4f2ec"});
+hd("meta",{name:"apple-mobile-web-app-capable",content:"yes"});hd("meta",{name:"mobile-web-app-capable",content:"yes"});
+hd("meta",{name:"apple-mobile-web-app-title",content:NOME});hd("meta",{name:"apple-mobile-web-app-status-bar-style",content:"default"});
+if("serviceWorker" in navigator)navigator.serviceWorker.register("/sito/sw.js",{scope:"/sito/"}).catch(function(){});
+var cs3=document.createElement("style");
+cs3.textContent="@view-transition{navigation:auto}a,button,label{-webkit-tap-highlight-color:transparent}"+
+"a.card,.lc-nav a,.btn,.drop,.mese,.lc-moon{transition:transform .12s ease}a.card:active,.lc-nav a:active,.btn:active,.drop:active,.mese:active,.lc-moon:active{transform:scale(.97)}"+
+"html{-webkit-text-size-adjust:100%}body{overscroll-behavior-y:none}"+
+".lc-inst{position:fixed;left:12px;right:12px;bottom:calc(76px + env(safe-area-inset-bottom));z-index:21;background:#1b2420;color:#fff;border-radius:16px;padding:14px 14px 14px 16px;display:flex;gap:12px;align-items:center;box-shadow:0 6px 24px rgba(0,0,0,.25);font:500 .92rem Inter,system-ui,-apple-system,sans-serif;line-height:1.35}"+
+".lc-inst img{width:42px;height:42px;border-radius:10px;flex:none}.lc-inst b{display:block;font-size:1rem}.lc-inst button{background:#7fb39b;color:#121614;border:0;border-radius:10px;padding:9px 12px;font:700 .9rem Inter,system-ui,sans-serif;flex:none}.lc-inst .x{background:none;color:#cfd8d2;padding:4px 6px;font-size:1.2rem}";
+document.head.appendChild(cs3);
+var std=(window.matchMedia&&matchMedia("(display-mode: standalone)").matches)||navigator.standalone;
+var ios=/iPhone|iPad|iPod/.test(navigator.userAgent),dp=null,visto=false;try{visto=!!localStorage.getItem("lc_inst")}catch(e){}
+function banner(){if(std||visto||document.querySelector(".lc-inst"))return;var b=document.createElement("div");b.className="lc-inst";
+ b.innerHTML='<img src="/sito/apple-icon.png" alt=""><div style="flex:1"><b>Installa '+NOME+'</b>'+(ios?'Tocca <b style="display:inline">Condividi</b> e poi «Aggiungi alla schermata Home».':'Icona sul telefono, si apre come un\'app.')+'</div>'+(dp?'<button class="ok">Installa</button>':'')+'<button class="x" aria-label="Chiudi">✕</button>';
+ document.body.appendChild(b);function via(){b.remove();try{localStorage.setItem("lc_inst","1")}catch(e){}}
+ b.querySelector(".x").onclick=via;var ok=b.querySelector(".ok");if(ok)ok.onclick=function(){dp.prompt();dp.userChoice.then(via)}}
+window.addEventListener("beforeinstallprompt",function(e){e.preventDefault();dp=e;setTimeout(banner,1500)});
+if(ios)setTimeout(banner,2500);
 })();
