@@ -4,8 +4,8 @@ var NOME="Lavoro Chiaro";
 var N=[["/sito/","Home",'<path d="M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/>'],
 ["/sito/busta-paga/","Busta",'<path d="M6 3h9l3 3v15H6z"/><path d="M9 12h6M9 16h6"/>'],
 ["/sito/le-mie-ore/","Ore",'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>'],
-["/sito/lordo-netto/","Netto",'<path d="M4 7h16M4 12h10M4 17h6"/>'],
-["/sito/naspi/","NASpI",'<path d="M12 3v18M17 7H9.5a3 3 0 0 0 0 6h5a3 3 0 0 1 0 6H6"/>']];
+["/sito/lordo-netto/","Netto",'<path d="M4 5h16l-6 7v6l-4 2v-8z"/>'],
+["/sito/naspi/","NASpI",'<path d="M17.5 6.5a7 7 0 1 0 0 11M4 10.5h9M4 13.5h9"/>']];
 var p=location.pathname.replace(/index\.html$/,"");if(p.slice(-1)!=="/")p+="/";
 function ic(d){return '<svg class="lc-ic" viewBox="0 0 24 24">'+d+'</svg>'}
 function rd(k){try{return JSON.parse(localStorage.getItem(k))||{}}catch(e){return {}}}
