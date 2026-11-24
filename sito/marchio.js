@@ -99,4 +99,20 @@ var cs6=document.createElement("style");
 cs6.textContent="body.lc-page a[href*='wa.me']{position:static!important;display:block!important;width:max-content;margin:22px auto 0;box-shadow:none!important}"+
 "body.lc-page .box .row>div:has(#mens){flex:.62}body.lc-page .box select{font-weight:500}";
 document.head.appendChild(cs6);
+
+/* Tasto indietro sempre + animazioni morbide */
+var dsh=document.getElementById("vDash"),bk=document.getElementById("back");
+if(dsh&&bk&&typeof window.vai==="function"){var sync=function(){bk.style.display=dsh.classList.contains("hide")?"flex":"none"};
+ if(typeof window.aggiornaBack==="function")window.aggiornaBack=sync;var ov=window.vai;window.vai=function(){var r=ov.apply(this,arguments);setTimeout(sync,0);return r};setTimeout(sync,0)}
+if(!dr&&p!=="/sito/"){var bb=document.querySelector(".lc-bar");if(bb){var ba=document.createElement("a");ba.className="lc-back";ba.href="/sito/";ba.setAttribute("aria-label","Indietro");
+ ba.innerHTML=ic('<path d="M15 5l-7 7 7 7"/>');ba.onclick=function(e){if(document.referrer.indexOf(location.origin+"/sito/")===0&&history.length>1){e.preventDefault();history.back()}};
+ var br=bb.querySelector(".lc-brand");var wr=document.createElement("div");wr.style.cssText="display:flex;align-items:center;gap:10px";bb.insertBefore(wr,br);wr.appendChild(ba);wr.appendChild(br)}}
+var cs7=document.createElement("style");
+cs7.textContent=".lc-back{width:38px;height:38px;border:1px solid #e6e2d8;background:#fff;border-radius:10px;display:flex;align-items:center;justify-content:center;color:#1b2420}.lc-back .lc-ic{width:20px;height:20px}"+
+"body.lc-dark .lc-back{background:#1c2320;color:#e9eee9;border-color:#2c3631}"+
+"@keyframes lcIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}"+
+"main>*,.wrap>section:not(.hide),.wrap>.card:not(.hide),#risultato:not(.hide),.tile,.ult,.box,.lc-inst{animation:lcIn .32s cubic-bezier(.2,.7,.2,1) both}"+
+".tile:nth-child(2){animation-delay:.04s}.tile:nth-child(3){animation-delay:.08s}.tile:nth-child(4){animation-delay:.12s}"+
+"@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}";
+document.head.appendChild(cs7);
 })();
