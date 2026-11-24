@@ -70,4 +70,10 @@ function banner(){if(std||visto||document.querySelector(".lc-inst"))return;var b
  b.querySelector(".x").onclick=via;var ok=b.querySelector(".ok");if(ok)ok.onclick=function(){dp.prompt();dp.userChoice.then(via)}}
 window.addEventListener("beforeinstallprompt",function(e){e.preventDefault();dp=e;setTimeout(banner,1500)});
 if(ios)setTimeout(banner,2500);
+
+/* Niente zoom: si comporta come un'app */
+var vp=document.querySelector('meta[name="viewport"]');if(vp)vp.setAttribute("content","width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover");
+var cs4=document.createElement("style");cs4.textContent="html,body{touch-action:manipulation}input,select,textarea{font-size:16px!important}";document.head.appendChild(cs4);
+["gesturestart","gesturechange"].forEach(function(t){document.addEventListener(t,function(e){e.preventDefault()},{passive:false})});
+document.addEventListener("touchmove",function(e){if(e.touches&&e.touches.length>1)e.preventDefault()},{passive:false});
 })();
