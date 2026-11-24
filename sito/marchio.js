@@ -93,4 +93,10 @@ cs5.textContent="body.lc-page main{max-width:560px;padding:22px 18px 30px}"+
 "body.lc-dark .box input:not([type=checkbox]),body.lc-dark .box select{background:#161c19!important}"+
 "body.lc-dark #out.big{background:#e9eee9!important;color:#121614}body.lc-dark #out.big .s{color:#4d5a53!important}body.lc-dark #out.big .n{color:#121614!important}body.lc-dark #out.no .n{color:#a33!important}";
 document.head.appendChild(cs5);
+
+/* Rifiniture strumenti */
+var cs6=document.createElement("style");
+cs6.textContent="body.lc-page a[href*='wa.me']{position:static!important;display:block!important;width:max-content;margin:22px auto 0;box-shadow:none!important}"+
+"body.lc-page .box .row>div:has(#mens){flex:.62}body.lc-page .box select{font-weight:500}";
+document.head.appendChild(cs6);
 })();
