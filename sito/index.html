@@ -2,32 +2,53 @@
 <html lang="it">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval' blob: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://gc.zgo.at; worker-src 'self' blob:; connect-src 'self' data: blob: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://tessdata.projectnaptha.com https://open.er-api.com https://createtool.goatcounter.com; img-src 'self' data: blob: https://createtool.goatcounter.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; object-src 'none'; base-uri 'none'; form-action 'none'">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://gc.zgo.at; connect-src 'self' https://createtool.goatcounter.com; img-src 'self' data: https://createtool.goatcounter.com; style-src 'self' 'unsafe-inline'; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Lavoro Chiaro — strumenti gratuiti per chi lavora: busta paga, netto, NASpI, ore</title>
-<meta name="description" content="Strumenti gratuiti per chi lavora: capisci la tua busta paga voce per voce, segna ore e straordinari. Niente registrazione, i dati restano sul tuo telefono.">
+<meta name="description" content="Strumenti gratuiti per chi lavora: capisci la tua busta paga voce per voce, segna ore e straordinari, calcola il netto dal lordo e la NASpI. Niente registrazione, i dati restano sul tuo telefono.">
 <style>
-body{margin:0;font-family:Inter,system-ui,-apple-system,sans-serif;background:#f6f7f5;color:#1d2420}
-main{max-width:640px;margin:0 auto;padding:32px 18px 80px}
-h1{font-size:26px;margin:0 0 8px}p.sub{color:#5b665f;margin:0 0 28px;line-height:1.5}
-a.card{display:block;background:#fff;border:1px solid #dfe5e0;border-radius:14px;padding:18px;margin-bottom:14px;text-decoration:none;color:inherit}
-a.card:hover{border-color:#2d6a52}
-a.card b{display:block;font-size:17px;color:#2d6a52;margin-bottom:4px}
-a.card span{color:#5b665f;font-size:14px;line-height:1.45}
-footer{color:#8a948d;font-size:12px;margin-top:30px;line-height:1.5}
+body{margin:0;font-family:Inter,system-ui,-apple-system,sans-serif;background:#f4f2ec;color:#1b2420}
+.app{max-width:560px;margin:0 auto;padding:22px 18px 30px}
+.hi{color:#727a75;font-size:15px;margin:6px 0 2px;font-weight:500}
+h1{font-size:32px;line-height:1.1;margin:0 0 22px;letter-spacing:-.03em}
+.ult{display:flex;align-items:center;gap:14px;background:#1b2420;color:#fff;border-radius:22px;padding:18px;margin-bottom:22px;text-decoration:none}
+.ult .t{flex:1}.ult small{display:block;color:#a9b5ae;font-size:12px;text-transform:uppercase;letter-spacing:.06em;font-weight:600}
+.ult b{display:block;font-size:20px;margin-top:2px;letter-spacing:-.01em}.ult .go{font-size:24px;color:#7fb39b}
+.lbl{font-size:12px;font-weight:700;color:#727a75;text-transform:uppercase;letter-spacing:.07em;margin:0 4px 10px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.tile{display:flex;flex-direction:column;justify-content:space-between;min-height:150px;background:#fff;border:1px solid #e6e2d8;border-radius:22px;padding:16px;text-decoration:none;color:inherit;box-shadow:0 1px 2px rgba(20,30,25,.05)}
+.tile .i{width:44px;height:44px;border-radius:14px;background:#e6efe9;color:#2d6a52;display:flex;align-items:center;justify-content:center}
+.tile .i svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.tile b{display:block;font-size:16.5px;letter-spacing:-.01em;margin-top:14px}
+.tile span{display:block;color:#727a75;font-size:13px;line-height:1.35;margin-top:3px}
+.priv{display:flex;gap:10px;align-items:center;color:#727a75;font-size:13px;line-height:1.4;margin:22px 4px 0}
+.priv svg{width:18px;height:18px;flex:none;fill:none;stroke:#2d6a52;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+footer{color:#9aa49e;font-size:11.5px;margin:16px 4px 0;line-height:1.5}
+body.lc-dark .tile{background:#1c2320!important;border-color:#2c3631!important}body.lc-dark .tile .i{background:#24332c;color:#7fb39b}
+body.lc-dark .ult{background:#e9eee9;color:#121614}body.lc-dark .ult small{color:#4d5a53}body.lc-dark .ult .go{color:#2d6a52}
+body.lc-dark .tile b{color:#e9eee9}body.lc-dark .hi,body.lc-dark .tile span,body.lc-dark .priv{color:#9aa49e}
 </style>
 </head>
 <body>
-<main>
-<h1>Lavoro Chiaro</h1>
-<p class="sub">Strumenti gratuiti per chi lavora. Semplici, senza registrazione. I tuoi dati restano solo sul tuo telefono o computer.</p>
-<a class="card" href="busta-paga/"><b>Capisci la tua busta paga</b><span>Carica il PDF e ti spiega ogni voce: netto, tasse, TFR, ferie e permessi residui. Con l'archivio dei tuoi mesi.</span></a>
-<a class="card" href="le-mie-ore/"><b>Le mie ore</b><span>Segna ogni giorno ore, straordinari, ferie e malattia. Weekend e festivi contati da soli. Foto del rapportino.</span></a>
-<a class="card" href="lordo-netto/"><b>Da lordo a netto</b><span>Quanto prendi davvero al mese? Inserisci RAL o lordo mensile e vedi subito il netto 2026, con tasse e contributi spiegati.</span></a>
-<a class="card" href="naspi/"><b>Calcolo NASpI</b><span>Hai perso il lavoro? Quanto prendi di disoccupazione, per quanti mesi e come scende mese per mese. Valori INPS 2026.</span></a>
+<main class="app">
+<p class="hi" id="hi">Ciao</p>
+<h1>Cosa vuoi fare oggi?</h1>
+<a class="ult" id="ult" href="busta-paga/" style="display:none"><div class="t"><small>Ultima busta</small><b id="ultM"></b></div><span class="go">›</span></a>
+<div class="lbl">Strumenti</div>
+<div class="grid">
+<a class="tile" href="busta-paga/"><div class="i"><svg viewBox="0 0 24 24"><path d="M6 3h9l3 3v15H6z"/><path d="M9 12h6M9 16h6"/></svg></div><div><b>Busta paga</b><span>Carica il PDF, capisci ogni voce</span></div></a>
+<a class="tile" href="le-mie-ore/"><div class="i"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div><div><b>Le mie ore</b><span>Ore, straordinari e ferie</span></div></a>
+<a class="tile" href="lordo-netto/"><div class="i"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h10M4 17h6"/></svg></div><div><b>Da lordo a netto</b><span>Quanto prendi davvero</span></div></a>
+<a class="tile" href="naspi/"><div class="i"><svg viewBox="0 0 24 24"><path d="M12 3v18M17 7H9.5a3 3 0 0 0 0 6h5a3 3 0 0 1 0 6H6"/></svg></div><div><b>NASpI</b><span>Disoccupazione: quanto e per quanto</span></div></a>
+</div>
+<p class="priv"><svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Gratis, senza registrazione. I tuoi dati restano solo su questo telefono.</p>
 <footer>Gli strumenti hanno solo scopo informativo e non sostituiscono il consulente del lavoro o il CAF.</footer>
 </main>
+<script>
+(function(){var h=new Date().getHours();document.getElementById("hi").textContent=h<13?"Buongiorno":h<18?"Buon pomeriggio":"Buonasera";
+try{var a=JSON.parse(localStorage.getItem("busta_archivio")||"[]");if(a.length){a.sort(function(x,y){return (y.anno-x.anno)||(y.meseNum-x.meseNum)});var m=String(a[0].mese||"");document.getElementById("ultM").textContent=m.charAt(0)+m.slice(1).toLowerCase()+" "+a[0].anno;document.getElementById("ult").style.display="flex"}}catch(e){}})();
+</script>
+<script data-goatcounter="https://createtool.goatcounter.com/count" async src="https://gc.zgo.at/count.v4.js" crossorigin="anonymous" integrity="sha384-nRw6qfbWyJha9LhsOtSb2YJDyZdKvvCFh0fJYlkquSFjUxp9FVNugbfy8q1jdxI+"></script>
+<script src="marchio.js?v=4"></script>
 </body>
 </html>
-<script data-goatcounter="https://createtool.goatcounter.com/count" async src="https://gc.zgo.at/count.v4.js" crossorigin="anonymous" integrity="sha384-nRw6qfbWyJha9LhsOtSb2YJDyZdKvvCFh0fJYlkquSFjUxp9FVNugbfy8q1jdxI+"></script>
-<script src="marchio.js?v=3"></script>
